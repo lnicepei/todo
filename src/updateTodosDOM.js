@@ -21,21 +21,21 @@ function createTodoButton(){
 
 let todosArray = [];
 function createTodo(){
-    // alert("enter your todo");
-    // let name = prompt("Name");
-    // let description = prompt("Description");
-    // let date = prompt("date");
-    // let priority = prompt("priority");
+    alert("enter your todo");
+    let name = prompt("Name");
+    let description = prompt("Description");
+    let date = prompt("date");
+    let priority = prompt("priority");
     let complete = 1;
-    let name = 'One';
-    let description = 'Descr';
-    let date = 1;
-    let priority = 0;
-    let test = Todo(name, description, date, priority, complete);
-    todosArray.push(test);
-    showTodosArray();
-    createTodoButton();
-    return{test}
+    // let name = 'One';
+    // let description = 'Descr';
+    // let date = 1;
+    // let priority = 0;
+    let task = Todo(name, description, date, priority, complete);
+    // todosArray.push(task);
+    // showTodosArray();
+    // createTodoButton();
+    return{task}
 }
 
 export {createTodoButton, showTodosArray, createTodo}
