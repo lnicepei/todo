@@ -1,6 +1,4 @@
 import { createTodo } from "./updateTodosDOM";
+import { createProject } from "./updateProjectsDOM";
 
-let createTodoButton = document.createElement('button');
-document.querySelector('#content').appendChild(createTodoButton);
-createTodoButton.textContent = 'Create todo';
-createTodoButton.addEventListener('click', createTodo);
+document.querySelector('#project').addEventListener('click', createProject);
