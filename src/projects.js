@@ -3,7 +3,7 @@ let arrayOfProjects = [];
 class Project{
     constructor(name){
         this.name = name;
-        this.arr = [];
+        this.arrayOfTodos = [];
         arrayOfProjects.push(this);
     }
 
