@@ -25,6 +25,25 @@ function createProject() {
     project.textContent = name;
 }
 
+(function createInbox(){
+    let inbox = new Project('Inbox');
+    let inboxContainer = document.createElement('div');
+    inboxContainer.className = 'inbox';
+    let taskInsideInbox = TodoButton(inbox);
+    inbox.arr.push(taskInsideInbox);
+    document.querySelector('.inbox').addEventListener('click', () => {
+        document.getElementById('content').innerHTML = '';
+        for(let f = 1; f <= inbox.arr.length - 1; f++){
+            let taskOnTheScreen = document.createElement('div');
+            taskOnTheScreen.className = 'task';
+            taskOnTheScreen.textContent += inbox.arr[f].name + inbox.arr[f].description + inbox.arr[f].date + inbox.arr[f].priority + inbox.arr[f].complete;
+            document.querySelector('#content').appendChild(taskOnTheScreen);
+        }
+        TodoButton(inbox);
+    });
+    document.querySelector('.inbox').appendChild(inboxContainer);
+})();
+
 function showAllTasks(newProject) {
     document.getElementById('content').innerHTML = '';
         for(let f = 1; f <= newProject.arr.length - 1; f++){
