@@ -1,9 +1,4 @@
-function Todo(name, description, date, priority, complete){
-    
-    function createTodo(){
-        updateTodoOnScreen(name, description, date, priority, complete);
-    }
-    
+function Todo(name, description, date, priority, complete){    
     return{
         name: name,
         description: description,
