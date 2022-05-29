@@ -1,10 +1,10 @@
-import { createTodoButton } from "./updateTodosDOM";
+import { TodoButton } from "./updateTodosDOM";
 
 function Todo(name, description, date, priority, complete){
     
     function createTodo(){
         updateTodoOnScreen(name, description, date, priority, complete);
-        createTodoButton();
+        TodoButton();
     }
     
     return{
