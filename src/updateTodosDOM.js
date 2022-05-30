@@ -21,41 +21,8 @@ function TodoButton(newProject) {
 
         newProject.arrayOfTodos.push(task);
         createTask(newProject);
-        // document.querySelector('#content').appendChild(todoButton);
     });
 }
 
 
-
-// function showAllTasks(newProject) {
-//     document.getElementById('content').innerHTML = '';
-
-//     // document.querySelector('#content').appendChild(checkBox);
-    
-//     console.log(newProject);
-
-//     for(let f = 1; f <= newProject.arrayOfTodos.length - 1; f++) {
-//         let taskOnTheScreen = document.createElement('div');
-//         taskOnTheScreen.className = 'task';
-        
-//         taskOnTheScreen.textContent += newProject.arrayOfTodos[f].name + newProject.arrayOfTodos[f].description + newProject.arrayOfTodos[f].date + newProject.arrayOfTodos[f].priority;
-        
-//         let checkBox = document.createElement('INPUT');
-//         checkBox.setAttribute('type', 'checkbox');
-        
-//         if(newProject.arrayOfTodos[f].completed == 0) taskOnTheScreen.appendChild(checkBox);
-//         document.querySelector('#content').appendChild(taskOnTheScreen);
-//     }
-// }
-
-function deleteTask(newProject) {
-    for( var i = 0; i < newProject.arrayOfTodos.length; i++){ 
-    
-        if (arr[i] === 5) {
-            newProject.arrayOfTodos.splice(i, 1); 
-        }
-    
-    }
-}
-
-export { TodoButton, deleteTask }
+export { TodoButton }
