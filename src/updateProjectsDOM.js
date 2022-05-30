@@ -21,7 +21,7 @@ function createProject() {
     project.textContent = name;
 }
 
-(function createInbox(){
+(function createInbox() {
     let inbox = new Project('Inbox');
 
     let inboxContainer = document.createElement('div');
@@ -37,22 +37,41 @@ function createProject() {
     document.querySelector('.inbox').appendChild(inboxContainer);
 })();
 
-function createTask(project){
+function createTask(project) {
     document.getElementById('content').innerHTML = '';
 
-        for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
-            let taskOnTheScreen = document.createElement('div');
-            taskOnTheScreen.className = 'task';
-            
-            taskOnTheScreen.textContent += project.arrayOfTodos[f].name + project.arrayOfTodos[f].description + project.arrayOfTodos[f].date + project.arrayOfTodos[f].priority;
-            
-            let checkBox = document.createElement('INPUT');
-            checkBox.setAttribute('type', 'checkbox');
-            
-            if(project.arrayOfTodos[f].completed == 0) taskOnTheScreen.appendChild(checkBox);
-            document.querySelector('#content').appendChild(taskOnTheScreen);
-        }
-        TodoButton(project);
+    for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
+        let taskOnTheScreen = document.createElement('div');
+        taskOnTheScreen.className = 'task';
+        
+        taskOnTheScreen.textContent += project.arrayOfTodos[f].name + project.arrayOfTodos[f].description + project.arrayOfTodos[f].date + project.arrayOfTodos[f].priority;
+        
+        let checkBox = document.createElement('button');
+        checkBox.textContent = 'Complete';
+        checkBox.addEventListener('click', () => {
+            deleteTask(project, f);
+            createTask(project);
+        })
+        
+        if(project.arrayOfTodos[f].completed == 0) taskOnTheScreen.appendChild(checkBox);
+        document.querySelector('#content').appendChild(taskOnTheScreen);
+    }
+
+    TodoButton(project);
+}
+
+
+function deleteTask(newProject, numberOfTask) {
+    for( var i = 0; i < newProject.arrayOfTodos.length; i++){ 
+    
+        // if (arr[i] === 5) {
+            newProject.arrayOfTodos.splice(numberOfTask, 1); 
+        // }
+    
+    }
+    // newProject.arrayOfTodos[numberOfTask];
+    console.log(newProject.arrayOfTodos);
+
 }
 
 export {createProject, createTask}
