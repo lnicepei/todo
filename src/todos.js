@@ -1,10 +1,10 @@
-function Todo(name, description, date, priority, complete){    
+function Todo(name, description, date, priority, completed){
     return{
         name: name,
         description: description,
         date: date,
         priority: priority,
-        complete: complete
+        completed: completed
     }
 }
 
