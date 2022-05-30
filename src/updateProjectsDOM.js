@@ -1,5 +1,5 @@
 import { Project } from "./projects";
-import { TodoButton, deleteTask } from "./updateTodosDOM";
+import { TodoButton } from "./updateTodosDOM";
 
 function createProject() {
     let name = prompt('Name');
@@ -14,35 +14,11 @@ function createProject() {
     newProject.arrayOfTodos.push(taskInsideProject);
 
     project.addEventListener('click', () => {
-        document.getElementById('content').innerHTML = '';
-
-        for(let f = 1; f <= newProject.arrayOfTodos.length - 1; f++) {
-            let taskOnTheScreen = document.createElement('div');
-            taskOnTheScreen.className = 'task';
-            taskOnTheScreen.addEventListener('click', () => {
-                alert('hello');
-            });
-            taskOnTheScreen.textContent += newProject.arrayOfTodos[f].name + newProject.arrayOfTodos[f].description + newProject.arrayOfTodos[f].date + newProject.arrayOfTodos[f].priority + newProject.arrayOfTodos[f].complete;
-            
-            document.querySelector('#content').appendChild(taskOnTheScreen);
-        }
-        
-        TodoButton(newProject);
+        createTask(newProject);
     });
     
     document.querySelector('.projects').appendChild(project);
     project.textContent = name;
-}
-
-function deleteTaskInside(newProject, name){
-    for( var i = 0; i < newProject.arrayOfTodos.length; i++){ 
-    
-        if ( newProject.arrayOfTodos[i].name === name) { 
-    
-            newProject.arrayOfTodos.splice(i, 1); 
-        }
-    
-    }
 }
 
 (function createInbox(){
@@ -55,18 +31,28 @@ function deleteTaskInside(newProject, name){
     inbox.arrayOfTodos.push(taskInsideInbox);
 
     document.querySelector('.inbox').addEventListener('click', () => {
-        document.getElementById('content').innerHTML = '';
-
-        for(let f = 1; f <= inbox.arrayOfTodos.length - 1; f++) {
-            let taskOnTheScreen = document.createElement('div');
-            taskOnTheScreen.className = 'task';
-            taskOnTheScreen.textContent += inbox.arrayOfTodos[f].name + inbox.arrayOfTodos[f].description + inbox.arrayOfTodos[f].date + inbox.arrayOfTodos[f].priority + inbox.arrayOfTodos[f].complete;
-            document.querySelector('#content').appendChild(taskOnTheScreen);
-        }
-        TodoButton(inbox);
+        createTask(inbox)
     });
 
     document.querySelector('.inbox').appendChild(inboxContainer);
 })();
 
-export {createProject}
+function createTask(project){
+    document.getElementById('content').innerHTML = '';
+
+        for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
+            let taskOnTheScreen = document.createElement('div');
+            taskOnTheScreen.className = 'task';
+            
+            taskOnTheScreen.textContent += project.arrayOfTodos[f].name + project.arrayOfTodos[f].description + project.arrayOfTodos[f].date + project.arrayOfTodos[f].priority;
+            
+            let checkBox = document.createElement('INPUT');
+            checkBox.setAttribute('type', 'checkbox');
+            
+            if(project.arrayOfTodos[f].completed == 0) taskOnTheScreen.appendChild(checkBox);
+            document.querySelector('#content').appendChild(taskOnTheScreen);
+        }
+        TodoButton(project);
+}
+
+export {createProject, createTask}
