@@ -62,16 +62,9 @@ function createTask(project) {
 
 
 function deleteTask(newProject, numberOfTask) {
-    for( var i = 0; i < newProject.arrayOfTodos.length; i++){ 
-    
-        // if (arr[i] === 5) {
-            newProject.arrayOfTodos.splice(numberOfTask, 1); 
-        // }
-    
-    }
-    // newProject.arrayOfTodos[numberOfTask];
-    console.log(newProject.arrayOfTodos);
+    newProject.arrayOfTodos.splice(numberOfTask, 1); 
 
+    console.log(newProject.arrayOfTodos);
 }
 
 export {createProject, createTask}
