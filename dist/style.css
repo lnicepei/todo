@@ -26,3 +26,12 @@ header{
     grid-column: 2 / 10;
     background: white;
 }
+
+.popup{
+    display: block;
+    position: absolute;
+    transform: scale(0);
+    background: red;
+    top: 50%;
+    left: 50%;
+}
