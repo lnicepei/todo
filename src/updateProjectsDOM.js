@@ -44,16 +44,59 @@ function createTask(project) {
         let taskOnTheScreen = document.createElement('div');
         taskOnTheScreen.className = 'task';
         
-        taskOnTheScreen.textContent += project.arrayOfTodos[f].name + project.arrayOfTodos[f].description + project.arrayOfTodos[f].date + project.arrayOfTodos[f].priority;
-        
-        let checkBox = document.createElement('button');
+        let checkBox = document.createElement('div');
         checkBox.textContent = 'Complete';
+        checkBox.className = 'checkbox';
+        taskOnTheScreen.appendChild(checkBox);
+
+        let taskName = document.createElement('div');
+        taskName.textContent = project.arrayOfTodos[f].name;
+        taskName.className = 'taskname';
+        taskOnTheScreen.appendChild(taskName);
+
+        let description = document.createElement('div');
+        description.textContent = project.arrayOfTodos[f].description;
+        description.className = 'description';
+        taskOnTheScreen.appendChild(description);
+
+        let priority = document.createElement('select');
+
+        for(let i = 0; i < 5; i++){
+            let opt = document.createElement('option');
+            opt.value = i;
+            (i > 0) ? opt.innerHTML = i : opt.innerHTML = '';
+            priority.appendChild(opt);
+        }
+
+        priority.addEventListener('change', (e) => {
+            taskOnTheScreen.priority = e.target.value;
+            if(e.target.value == 1) taskName.style.background = 'red';
+            if(e.target.value == 2) taskName.style.background = 'orange';
+            if(e.target.value == 3) taskName.style.background = 'yellow';
+            if(e.target.value == 4) taskName.style.background = 'green';
+        });
+        
+        // priority.textContent = project.arrayOfTodos[f].priority;
+        priority.className = 'priority';
+        taskOnTheScreen.appendChild(priority);
+        
+        // taskOnTheScreen.textContent += project.arrayOfTodos[f].name + project.arrayOfTodos[f].description + project.arrayOfTodos[f].priority;
+                
         checkBox.addEventListener('click', () => {
             deleteTask(project, f);
             createTask(project);
+        });
+
+        let datePicker = document.createElement('input');
+        datePicker.setAttribute('type', 'date');
+        taskOnTheScreen.appendChild(datePicker);
+        datePicker.className = 'date';
+        datePicker.addEventListener('change', () => {
+            let input = datePicker.value;
+            console.log(input);
+            datePicker.textContent = input;
         })
         
-        if(project.arrayOfTodos[f].completed == 0) taskOnTheScreen.appendChild(checkBox);
         document.querySelector('#content').appendChild(taskOnTheScreen);
     }
 
