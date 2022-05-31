@@ -8,24 +8,28 @@ function TodoButton(newProject) {
     todoButton.textContent = 'Create todo';
 
     todoButton.addEventListener('click', () => {
-        let name = prompt("Name");
-        // let description = prompt("Description");
-        // let date = prompt("date");
-        // let priority = prompt("priority");
-        let description = 'Description';
-        let date = 1;
-        let priority = 0;
-        let completed = 0;
-
-        let task = Todo(name, description, date, priority, completed);
-
-        newProject.arrayOfTodos.push(task);
-        createTask(newProject);
+        createPopup(newProject);
     });
 }
 
-function createPopup() {
-    
-}
+function createPopup(newProject) {
+    let popup = document.querySelector('.popup');
+    // popup.style.display = 'block';
+    popup.style.transform = 'scale(1)';
 
+    document.querySelector(".submit-button").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        let name = document.getElementById('taskname').value;
+        let description = document.getElementById('description').value;
+        let date = document.getElementById('date').value;
+        let priority = document.getElementById('priority').value;
+
+        let task = Todo(name, description, date, priority);
+        document.getElementById('content').innerHTML = '';
+        newProject.arrayOfTodos.push(task);
+        createTask(newProject);
+        popup.style.transform = 'scale(0)';
+    });
+}
 export { TodoButton }
