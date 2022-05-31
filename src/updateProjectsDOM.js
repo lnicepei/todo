@@ -59,22 +59,27 @@ function createTask(project) {
         description.className = 'description';
         taskOnTheScreen.appendChild(description);
 
-        let priority = document.createElement('select');
+        let priority = document.createElement('div');
+        taskOnTheScreen.priority = project.arrayOfTodos[f].priority;
+            if(project.arrayOfTodos[f].priority == 1) taskName.style.background = 'red';
+            if(project.arrayOfTodos[f].priority == 2) taskName.style.background = 'orange';
+            if(project.arrayOfTodos[f].priority == 3) taskName.style.background = 'yellow';
+            // if(e.target.value == 4) taskName.style.background = 'green';
 
-        for(let i = 0; i < 5; i++){
-            let opt = document.createElement('option');
-            opt.value = i;
-            (i > 0) ? opt.innerHTML = i : opt.innerHTML = '';
-            priority.appendChild(opt);
-        }
+        // for(let i = 0; i < 5; i++){
+        //     let opt = document.createElement('option');
+        //     opt.value = i;
+        //     (i > 0) ? opt.innerHTML = i : opt.innerHTML = '';
+        //     priority.appendChild(opt);
+        // }
 
-        priority.addEventListener('change', (e) => {
-            taskOnTheScreen.priority = e.target.value;
-            if(e.target.value == 1) taskName.style.background = 'red';
-            if(e.target.value == 2) taskName.style.background = 'orange';
-            if(e.target.value == 3) taskName.style.background = 'yellow';
-            if(e.target.value == 4) taskName.style.background = 'green';
-        });
+        // priority.addEventListener('change', (e) => {
+        //     taskOnTheScreen.priority = e.target.value;
+        //     if(e.target.value == 1) taskName.style.background = 'red';
+        //     if(e.target.value == 2) taskName.style.background = 'orange';
+        //     if(e.target.value == 3) taskName.style.background = 'yellow';
+        //     if(e.target.value == 4) taskName.style.background = 'green';
+        // });
         
         // priority.textContent = project.arrayOfTodos[f].priority;
         priority.className = 'priority';
