@@ -46,3 +46,26 @@ header{
     justify-content: center;
     gap: 2rem;
 }
+
+.task {
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+      "\.checkbox \.taskname \.date"
+      "\.checkbox \.description \.date"; 
+  }
+  .\.checkbox { grid-area: \.checkbox; }
+  .\.taskname { grid-area: \.taskname; }
+  .\.date { grid-area: \.date; }
+  .\.description { grid-area: \.description; }
+
+.checkbox{
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid grey;
+    border-radius: 20px;
+}
