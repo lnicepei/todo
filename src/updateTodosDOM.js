@@ -22,15 +22,9 @@ function createPopup(newProject) {
             popup.style.transform = 'scale(0)';
         }
     });
-    
-    //remove this event listener
 
     document.querySelector(".submit-button").addEventListener("click", getDataFromForm, false);
     document.querySelector(".submit-button").parameter = newProject;
-    
-    //remove this event listener
-    
-    // When the user clicks anywhere outside of the modal, close it
 }
 
 function getDataFromForm(e) {
