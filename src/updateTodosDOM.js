@@ -26,10 +26,18 @@ function createPopup(newProject) {
         let priority = document.getElementById('priority').value;
 
         let task = Todo(name, description, date, priority);
-        document.getElementById('content').innerHTML = '';
         newProject.arrayOfTodos.push(task);
         createTask(newProject);
         popup.style.transform = 'scale(0)';
+
     });
+    
+    document.body.addEventListener('click', function(event) {
+        if (event.target == popup) {
+            popup.style.transform = 'scale(0)';
+
+        }
+    });
+    // When the user clicks anywhere outside of the modal, close it
 }
 export { TodoButton }
