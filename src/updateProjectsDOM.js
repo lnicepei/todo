@@ -74,14 +74,10 @@ function createTask(project) {
             createTask(project);
         });
 
-        let datePicker = document.createElement('input');
-        datePicker.setAttribute('type', 'date');
+        let datePicker = document.createElement('div');
         taskOnTheScreen.appendChild(datePicker);
         datePicker.className = 'date';
-        datePicker.addEventListener('change', () => {
-            let input = datePicker.value;
-            datePicker.textContent = input;
-        })
+        datePicker.textContent = project.arrayOfTodos[f].date;
         
         document.querySelector('#content').appendChild(taskOnTheScreen);
     }
