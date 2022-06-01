@@ -44,8 +44,8 @@ function createTask(project) {
         let taskOnTheScreen = document.createElement('div');
         taskOnTheScreen.className = 'task';
         
-        let checkBox = document.createElement('div');
-        checkBox.textContent = 'Complete';
+        let checkBox = document.createElement('button');
+        checkBox.textContent = '';
         checkBox.className = 'checkbox';
         taskOnTheScreen.appendChild(checkBox);
 
