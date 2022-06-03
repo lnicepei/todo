@@ -1,8 +1,7 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
 
-function createProject() {
-    let name = prompt('Name');
+function createProject(name) {
     let newProject = new Project(name);
     
     let project = document.createElement('div');
@@ -85,9 +84,30 @@ function createTask(project) {
     TodoButton(project);
 }
 
+function inputProjectName(){
+    let inputForProjectName = document.createElement('input');
+    inputForProjectName.setAttribute('type', 'text');
+    let projectsDiv = document.querySelector('.projects')
+    projectsDiv.appendChild(inputForProjectName);
+
+    let submitButtonForProjectName = document.createElement('button');
+    projectsDiv.appendChild(submitButtonForProjectName);
+    submitButtonForProjectName.textContent = 'Ok';
+
+    submitButtonForProjectName.addEventListener('click', () => {
+        let name = inputForProjectName.value;
+        if(name) {
+            projectsDiv.removeChild(inputForProjectName);
+            projectsDiv.removeChild(submitButtonForProjectName);
+            createProject(name);
+        }else {
+            alert('Enter project name');
+        }
+    });
+}
 
 function deleteTask(newProject, numberOfTask) {
     newProject.arrayOfTodos.splice(numberOfTask, 1); 
 }
 
-export {createProject, createTask}
+export {inputProjectName, createTask}
