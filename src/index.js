@@ -1,4 +1,4 @@
 import { createTodo } from "./updateTodosDOM";
-import { createProject } from "./updateProjectsDOM";
+import { inputProjectName } from "./updateProjectsDOM";
 
-document.querySelector('#project').addEventListener('click', createProject);
+document.querySelector('#project').addEventListener('click', inputProjectName);
