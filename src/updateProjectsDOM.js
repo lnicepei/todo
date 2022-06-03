@@ -1,23 +1,42 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-
+let arrayOfProjects = [];
 function createProject(name) {
     let newProject = new Project(name);
     
-    let project = document.createElement('div');
-    project.className = 'project';
-
+    arrayOfProjects.push(newProject);
+    
     document.querySelector('#content').textContent = '';
-
+    
     let taskInsideProject = TodoButton(newProject);
     newProject.arrayOfTodos.push(taskInsideProject);
-
-    project.addEventListener('click', () => {
-        createTask(newProject);
-    });
     
-    document.querySelector('.projects').appendChild(project);
-    project.textContent = name;
+    console.log(arrayOfProjects);
+    updateProjects();
+}
+
+function updateProjects() {
+    document.querySelector('.projects').innerHTML = '';
+    for(let i = 0; i < arrayOfProjects.length; i++) {
+        let project = document.createElement('div');
+        project.className = 'project';
+        
+        document.querySelector('.projects').appendChild(project);
+        project.textContent = arrayOfProjects[i].name;
+
+        let deleteProjectButton = document.createElement('button');
+        deleteProjectButton.textContent = 'x';
+        
+        deleteProjectButton.addEventListener('click', () => {
+            deleteProject(arrayOfProjects[i]);
+        });
+
+        project.addEventListener('click', () => {
+            createTask(arrayOfProjects[i]);
+        });
+
+        project.appendChild(deleteProjectButton);
+    }
 }
 
 (function createInbox() {
@@ -84,11 +103,13 @@ function createTask(project) {
     TodoButton(project);
 }
 
-function inputProjectName(){
+function inputProjectName() {
     let inputForProjectName = document.createElement('input');
     inputForProjectName.setAttribute('type', 'text');
-    let projectsDiv = document.querySelector('.projects')
-    projectsDiv.appendChild(inputForProjectName);
+
+    let projectsDiv = document.querySelector('.projects');
+    console.log(projectsDiv.firstChild);
+    if(projectsDiv.lastChild !== inputForProjectName) projectsDiv.appendChild(inputForProjectName);
 
     let submitButtonForProjectName = document.createElement('button');
     projectsDiv.appendChild(submitButtonForProjectName);
@@ -108,6 +129,17 @@ function inputProjectName(){
 
 function deleteTask(newProject, numberOfTask) {
     newProject.arrayOfTodos.splice(numberOfTask, 1); 
+}
+
+function deleteProject(newProject){
+    for(let i = 0; i < arrayOfProjects.length; i++){
+        if(arrayOfProjects[i] == newProject){
+            arrayOfProjects.splice(i, 1);
+        }
+    }
+    document.querySelector('#content').innerHTML = '';
+    updateProjects();
+
 }
 
 export {inputProjectName, createTask}
