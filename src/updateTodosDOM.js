@@ -1,5 +1,5 @@
 import { Todo } from "./todos";
-import { createTask } from "./updateProjectsDOM";
+import { createAllTasksInProject } from "./updateProjectsDOM";
 
 function TodoButton(newProject) {
     let todoButton = document.createElement('button');
@@ -39,6 +39,6 @@ function getDataFromForm(e) {
 
     e.currentTarget.parameter.arrayOfTodos.push(task);
     popup.style.transform = 'scale(0)';
-    createTask(e.currentTarget.parameter);
+    createAllTasksInProject(e.currentTarget.parameter);
 }
 export { TodoButton }
