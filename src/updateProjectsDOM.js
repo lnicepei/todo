@@ -16,7 +16,7 @@ function createProject(name) {
 
 function updateProjects() {
     document.querySelector('.projects').innerHTML = '';
-    for(let i = 0; i < arrayOfProjects.length; i++) {
+    for(let i = 1; i < arrayOfProjects.length; i++) {
         let project = document.createElement('div');
         project.className = 'project';
         
@@ -31,7 +31,7 @@ function updateProjects() {
         });
 
         project.addEventListener('click', () => {
-            createTask(arrayOfProjects[i]);
+            createAllTasksInProject(arrayOfProjects[i]);
         });
 
         project.appendChild(deleteProjectButton);
@@ -43,20 +43,53 @@ function updateProjects() {
 
     let inboxContainer = document.createElement('div');
     inboxContainer.className = 'inbox';
-
+    
     let taskInsideInbox = TodoButton(inbox);
     inbox.arrayOfTodos.push(taskInsideInbox);
 
+    arrayOfProjects.push(inbox);
+
     document.querySelector('.inbox').addEventListener('click', () => {
-        createTask(inbox);
+        createAllTasksInProject(inbox);
     });
+
+    document.querySelector('.today').addEventListener('click', createTodaysTasks);
 
     document.querySelector('.inbox').appendChild(inboxContainer);
 })();
 
-function createTask(project) {
-    document.getElementById('content').innerHTML = '';
+function getDate() {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
 
+    today = yyyy + '-' + mm + '-' + dd;
+
+    return today;
+}
+
+function createTodaysTasks() {
+    document.querySelector('#content').innerHTML = '';
+    let todayContainer = document.createElement('div');
+    todayContainer.className = 'today';
+
+    let today = getDate();
+   
+    for(let i in arrayOfProjects) {
+        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
+            if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
+                createAllTasksInProject(arrayOfProjects[i], today);
+            }
+        }
+    }
+
+    document.querySelector('.today').appendChild(todayContainer);
+};
+
+function createAllTasksInProject(project, today) {
+    if (!today) document.getElementById('content').innerHTML = '';
+    
     for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
         let taskOnTheScreen = document.createElement('div');
         taskOnTheScreen.className = 'task';
@@ -88,7 +121,7 @@ function createTask(project) {
                         
         checkBox.addEventListener('click', () => {
             deleteTask(project, f);
-            createTask(project);
+            (!today) ? createAllTasksInProject(project) : createTodaysTasks();
         });
 
         let datePicker = document.createElement('div');
@@ -96,20 +129,17 @@ function createTask(project) {
         datePicker.className = 'date';
         datePicker.textContent = project.arrayOfTodos[f].date;
         
-        document.querySelector('#content').appendChild(taskOnTheScreen);
+        if(!today){
+            document.querySelector('#content').appendChild(taskOnTheScreen);
+        }else{
+            if(datePicker.textContent == today) document.querySelector('#content').appendChild(taskOnTheScreen);
+        }
     }
-
-    TodoButton(project);
+    if(!today) TodoButton(project);
 }
 
 function inputProjectName() {
     this.removeEventListener('click', inputProjectName);
-    
-    window.addEventListener('click', (e) => {
-        console.log(inputForProjectName.value);
-        if(!inputForProjectName.value) {
-        }
-    });
     
     var projectsDiv = document.querySelector('.projects');
     let closeButton = document.createElement('button');
@@ -161,4 +191,4 @@ function deleteProject(newProject){
 
 }
 
-export {inputProjectName, createTask}
+export {inputProjectName, createAllTasksInProject}
