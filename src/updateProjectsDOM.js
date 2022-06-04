@@ -11,7 +11,6 @@ function createProject(name) {
     let taskInsideProject = TodoButton(newProject);
     newProject.arrayOfTodos.push(taskInsideProject);
     
-    console.log(arrayOfProjects);
     updateProjects();
 }
 
@@ -104,19 +103,38 @@ function createTask(project) {
 }
 
 function inputProjectName() {
-    let inputForProjectName = document.createElement('input');
+    this.removeEventListener('click', inputProjectName);
+    
+    window.addEventListener('click', (e) => {
+        console.log(inputForProjectName.value);
+        if(!inputForProjectName.value) {
+        }
+    });
+    
+    var projectsDiv = document.querySelector('.projects');
+    let closeButton = document.createElement('button');
+    closeButton.textContent = 'x';
+    closeButton.addEventListener('click', () => {
+        projectsDiv.removeChild(inputForProjectName);
+        projectsDiv.removeChild(submitButtonForProjectName);
+        projectsDiv.removeChild(closeButton);
+        this.addEventListener('click', inputProjectName);
+    });
+    
+    var inputForProjectName = document.createElement('input');
     inputForProjectName.setAttribute('type', 'text');
-
-    let projectsDiv = document.querySelector('.projects');
-    console.log(projectsDiv.firstChild);
-    if(projectsDiv.lastChild !== inputForProjectName) projectsDiv.appendChild(inputForProjectName);
-
-    let submitButtonForProjectName = document.createElement('button');
+    
+    projectsDiv.appendChild(inputForProjectName);
+    
+    var submitButtonForProjectName = document.createElement('button');
+    projectsDiv.appendChild(closeButton);
     projectsDiv.appendChild(submitButtonForProjectName);
     submitButtonForProjectName.textContent = 'Ok';
 
+    
     submitButtonForProjectName.addEventListener('click', () => {
         let name = inputForProjectName.value;
+        
         if(name) {
             projectsDiv.removeChild(inputForProjectName);
             projectsDiv.removeChild(submitButtonForProjectName);
@@ -124,6 +142,7 @@ function inputProjectName() {
         }else {
             alert('Enter project name');
         }
+        this.addEventListener('click', inputProjectName);
     });
 }
 
