@@ -81,7 +81,7 @@ function createTodaysTasks() {
     for(let i in arrayOfProjects) {
         for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
             if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
-                createAllTasksInProject(arrayOfProjects[i], today);
+                createAllTasksInProject(arrayOfProjects[i], f);
             }
         }
     }
@@ -122,8 +122,8 @@ function createTodaysTasks() {
 //     document.querySelector('.upcoming').appendChild(upcomingContainer);
 // }
 
-function createAllTasksInProject(project, today) {
-    if (!today) document.getElementById('content').innerHTML = '';
+function createAllTasksInProject(project, indexOfTodayTask) {
+    if (!indexOfTodayTask) document.getElementById('content').innerHTML = '';
     
     for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
         let taskOnTheScreen = document.createElement('div');
@@ -156,7 +156,7 @@ function createAllTasksInProject(project, today) {
                         
         checkBox.addEventListener('click', () => {
             deleteTask(project, f);
-            (!today) ? createAllTasksInProject(project) : createTodaysTasks();
+            (!indexOfTodayTask) ? createAllTasksInProject(project) : createTodaysTasks();
         });
 
         let datePicker = document.createElement('div');
@@ -164,9 +164,13 @@ function createAllTasksInProject(project, today) {
         datePicker.className = 'date';
         datePicker.textContent = project.arrayOfTodos[f].date;
 
-        document.querySelector('#content').appendChild(taskOnTheScreen);
+        if(indexOfTodayTask){
+            if(indexOfTodayTask == f) document.querySelector('#content').appendChild(taskOnTheScreen);
+        }else{
+            document.querySelector('#content').appendChild(taskOnTheScreen);
+        }
     }
-    if(!today) TodoButton(project);
+    if(!indexOfTodayTask) TodoButton(project);
 }
 
 function inputProjectName() {
