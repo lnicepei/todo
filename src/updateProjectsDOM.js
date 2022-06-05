@@ -105,16 +105,16 @@ function createUpcomingTasks(){
     for(let i in arrayOfProjects) {
         for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) > yyyy) {
-                createAllTasksInProject(arrayOfProjects[i], f);
+                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
             }
             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
                arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) > mm) {
-                createAllTasksInProject(arrayOfProjects[i], f);
+                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
             }
             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
                arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) == mm &&
                arrayOfProjects[i].arrayOfTodos[f].date.substr(8, 2) > dd) {
-                createAllTasksInProject(arrayOfProjects[i], f);
+                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
             }
         }
     }
@@ -122,7 +122,7 @@ function createUpcomingTasks(){
     document.querySelector('.upcoming').appendChild(upcomingContainer);
 }
 
-function createAllTasksInProject(project, indexOfTodayTask) {
+function createAllTasksInProject(project, indexOfTodayTask, origin) {
     if (!indexOfTodayTask) document.getElementById('content').innerHTML = '';
     
     for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
@@ -155,8 +155,17 @@ function createAllTasksInProject(project, indexOfTodayTask) {
         taskOnTheScreen.appendChild(priority);
                         
         checkBox.addEventListener('click', () => {
+            // if (!indexOfTodayTask) deleteTask(project, f);
             deleteTask(project, f);
-            (!indexOfTodayTask) ? createAllTasksInProject(project) : createTodaysTasks();
+            // if (indexOfTodayTask) deleteTask(project, f, indexOfTodayTask);
+            if(!indexOfTodayTask){
+                createAllTasksInProject(project);
+            }else if(indexOfTodayTask && origin == 'upcoming'){
+                createUpcomingTasks();
+            }else{
+                createTodaysTasks();
+            }
+            // (!indexOfTodayTask) ? createAllTasksInProject(project) : createTodaysTasks();
         });
 
         let datePicker = document.createElement('div');
