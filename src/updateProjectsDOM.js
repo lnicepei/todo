@@ -55,7 +55,7 @@ function updateProjects() {
 
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
 
-    // document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
+    document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
 
     document.querySelector('.inbox').appendChild(inboxContainer);
 })();
@@ -89,38 +89,38 @@ function createTodaysTasks() {
     document.querySelector('.today').appendChild(todayContainer);
 };
 
-// function createUpcomingTasks(){
-//     document.querySelector('#content').innerHTML = '';
-//     let upcomingContainer = document.createElement('div');
-//     upcomingContainer.className = 'upcoming';
+function createUpcomingTasks(){
+    document.querySelector('#content').innerHTML = '';
+    let upcomingContainer = document.createElement('div');
+    upcomingContainer.className = 'upcoming';
 
-//     let today = new Date();
+    let today = new Date();
 
-//     let dd = String(today.getDate()).padStart(2, '0');
-//     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-//     let yyyy = today.getFullYear();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
 
-//     today = yyyy + '/' + mm + '/' + dd;   
+    today = yyyy + '/' + mm + '/' + dd;   
 
-//     for(let i in arrayOfProjects) {
-//         for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
-//             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) > yyyy) {
-//                 createAllTasksInProject(arrayOfProjects[i]);
-//             }
-//             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
-//                arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) > mm) {
-//                 createAllTasksInProject(arrayOfProjects[i]);
-//             }
-//             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
-//                arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) == mm &&
-//                arrayOfProjects[i].arrayOfTodos[f].date.substr(8, 2) > dd) {
-//                 createAllTasksInProject(arrayOfProjects[i]);
-//             }
-//         }
-//     }
+    for(let i in arrayOfProjects) {
+        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
+            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) > yyyy) {
+                createAllTasksInProject(arrayOfProjects[i], f);
+            }
+            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
+               arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) > mm) {
+                createAllTasksInProject(arrayOfProjects[i], f);
+            }
+            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
+               arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) == mm &&
+               arrayOfProjects[i].arrayOfTodos[f].date.substr(8, 2) > dd) {
+                createAllTasksInProject(arrayOfProjects[i], f);
+            }
+        }
+    }
 
-//     document.querySelector('.upcoming').appendChild(upcomingContainer);
-// }
+    document.querySelector('.upcoming').appendChild(upcomingContainer);
+}
 
 function createAllTasksInProject(project, indexOfTodayTask) {
     if (!indexOfTodayTask) document.getElementById('content').innerHTML = '';
