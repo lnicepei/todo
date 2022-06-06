@@ -4,27 +4,28 @@
 }
 body{
     display: grid;
-    grid-template-columns: repeat(1fr, 10);
-    grid-template-rows: repeat(1fr, 10);
+    grid-template-columns: repeat(100px, 10);
+    grid-template-rows: repeat(100px, 10);
     height: 100vh;
 }
 
 header{
     grid-row: 0 / 2;
     grid-column: 1 / 10;
-    background: grey;
+    background: #2d3035;
 }
 
 .sidebar{
     grid-row: 2 / 10;
     grid-column: 0 / 2;
-    background: lightgray;
+    background: #2d3035;
+    color: #f5f5f4;
 }
 
 #content{
     grid-row: 2 / 10;
     grid-column: 2 / 10;
-    background: white;
+    background: #22252a;
 }
 
 .popup{
@@ -47,25 +48,26 @@ header{
     gap: 2rem;
 }
 
+.inbox:hover, .today:hover, .upcoming:hover{
+    transition: .5s ease;
+    background: red;
+}
+
 .task {
     display: grid; 
     grid-template-columns: 1fr 1fr 1fr; 
     grid-template-rows: 1fr 1fr; 
-    gap: 0px 0px; 
-    grid-template-areas: 
-      "\.checkbox \.taskname \.date"
-      "\.checkbox \.description \.date"; 
-  }
-  .\.checkbox { grid-area: \.checkbox; }
-  .\.taskname { grid-area: \.taskname; }
-  .\.date { grid-area: \.date; }
-  .\.description { grid-area: \.description; }
+    background: #2d3035;
+    color: #f5f5f4;
+}
 
 .checkbox{
-    width: 25px;
-    height: 25px;
+    /* width: 25px;
+    height: 25px; */
     display: flex;
     justify-content: center;
-    border: 1px solid grey;
+    color: white;
+    border: 10px;
     border-radius: 20px;
 }
+
