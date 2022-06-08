@@ -190,7 +190,6 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
 }
 
 function updateCurrentProject(project){
-    console.log(project);
     (project.name) ? document.querySelector('.project-name').textContent = project.name : document.querySelector('.project-name').textContent = project;
 }
 
@@ -224,6 +223,7 @@ function inputProjectName() {
         if(name) {
             projectsDiv.removeChild(inputForProjectName);
             projectsDiv.removeChild(submitButtonForProjectName);
+            document.querySelector('.project-name').textContent = name;
             createProject(name);
         }else {
             alert('Enter project name');
