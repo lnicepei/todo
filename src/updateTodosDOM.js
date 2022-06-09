@@ -4,8 +4,9 @@ import { createAllTasksInProject } from "./updateProjectsDOM";
 function TodoButton(newProject) {
     let todoButton = document.createElement('button');
    
-    document.querySelector('#content').appendChild(todoButton);
+    document.querySelector('.create-button').appendChild(todoButton);
     todoButton.textContent = 'Create todo';
+    todoButton.className = 'create-button__btn';
 
     todoButton.addEventListener('click', () => {
         createPopup(newProject);
@@ -14,7 +15,7 @@ function TodoButton(newProject) {
 
 function createPopup(newProject) {
     // popup.style.display = 'block';
-    let popup = document.querySelector('.popup');
+    let popup = document.querySelector('.popup-container');
     popup.style.transform = 'scale(1)';
     
     document.body.addEventListener('click', function(event) {
@@ -35,7 +36,7 @@ function getDataFromForm(e) {
     let priority = document.getElementById('priority').value;
     let task = Todo(name, description, date, priority);
 
-    let popup = document.querySelector('.popup');
+    let popup = document.querySelector('.popup-container');
 
     e.currentTarget.parameter.arrayOfTodos.push(task);
     popup.style.transform = 'scale(0)';

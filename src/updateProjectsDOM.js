@@ -6,7 +6,7 @@ function createProject(name) {
     
     arrayOfProjects.push(newProject);
     
-    document.querySelector('#content').textContent = '';
+    document.querySelector('.content').textContent = '';
     
     let taskInsideProject = TodoButton(newProject);
     newProject.arrayOfTodos.push(taskInsideProject);
@@ -74,7 +74,8 @@ function getDate() {
 }
 
 function createTodaysTasks() {
-    document.querySelector('#content').innerHTML = '';
+    document.querySelector('.content').innerHTML = '';
+    document.querySelector('.create-button').innerHTML = '';
     let todayContainer = document.createElement('div');
     todayContainer.className = 'today';
 
@@ -94,7 +95,8 @@ function createTodaysTasks() {
 };
 
 function createUpcomingTasks(){
-    document.querySelector('#content').innerHTML = '';
+    document.querySelector('.content').innerHTML = '';
+    document.querySelector('.create-button').innerHTML = '';
     let upcomingContainer = document.createElement('div');
     upcomingContainer.className = 'upcoming';
 
@@ -129,8 +131,11 @@ function createUpcomingTasks(){
 }
 
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
-    if (!indexOfTodayTask) document.getElementById('content').innerHTML = '';
-    if (!indexOfTodayTask) updateCurrentProject(project);
+    if (!indexOfTodayTask){
+        document.querySelector('.content').innerHTML = '';
+        document.querySelector('.create-button').innerHTML = '';
+        updateCurrentProject(project);
+    } 
     
     for(let f = 1; f <= project.arrayOfTodos.length - 1; f++) {
         let taskOnTheScreen = document.createElement('div');
@@ -181,9 +186,9 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         datePicker.textContent = project.arrayOfTodos[f].date;
 
         if(indexOfTodayTask){
-            if(indexOfTodayTask == f) document.querySelector('#content').appendChild(taskOnTheScreen);
+            if(indexOfTodayTask == f) document.querySelector('.content').appendChild(taskOnTheScreen);
         }else{
-            document.querySelector('#content').appendChild(taskOnTheScreen);
+            document.querySelector('.content').appendChild(taskOnTheScreen);
         }
     }
     if(!indexOfTodayTask) TodoButton(project);
@@ -220,13 +225,17 @@ function inputProjectName() {
     submitButtonForProjectName.addEventListener('click', () => {
         let name = inputForProjectName.value;
         
-        if(name) {
+        console.log(arrayOfProjects);
+        if(name && name.length < 16 && !arrayOfProjects.includes(name)) {
             projectsDiv.removeChild(inputForProjectName);
             projectsDiv.removeChild(submitButtonForProjectName);
+            document.querySelector('.create-button').innerHTML = '';
             document.querySelector('.project-name').textContent = name;
             createProject(name);
-        }else {
-            alert('Enter project name');
+        }else if(arrayOfProjects.includes(name)) {
+            console.log('Such project already exists');
+        }else if(name.length >= 16){
+            alert('Project name should be less than 16 characters');
         }
         this.addEventListener('click', inputProjectName);
     });
@@ -242,7 +251,9 @@ function deleteProject(newProject){
             arrayOfProjects.splice(i, 1);
         }
     }
-    document.querySelector('#content').innerHTML = '';
+    document.querySelector('.content').innerHTML = '';
+    document.querySelector('.create-button').innerHTML = '';
+    document.querySelector('.project-name').textContent = '';
     updateProjects();
 
 }
