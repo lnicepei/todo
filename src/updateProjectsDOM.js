@@ -2,12 +2,43 @@ import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
 
 let arrayOfProjects = [];
-// console.log(JSON.parse(localStorage.getItem('projects') || []));
-if (JSON.parse(localStorage.getItem('projects') || [])) {
-    arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
-    updateProjects();
-}
 
+(function checkProjectsOnReload() {
+    if('projects' in localStorage){
+        arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+        updateProjects();
+    }
+    createInbox();
+            
+    
+    document.querySelector('.today').addEventListener('click', createTodaysTasks);
+    
+    document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
+})();
+
+function createInbox() {
+    let inbox = new Project('Inbox');
+    console.log(checkIdenticalProject(inbox));
+    
+    // if (!checkIdenticalProject(inbox)) {
+        document.querySelector('.inbox').addEventListener('click', () => {
+            createAllTasksInProject(inbox);
+            updateCurrentProject('Inbox'); // Updates current working project 
+        });
+
+        arrayOfProjects.push(inbox);
+        
+        let taskInsideInbox = TodoButton(inbox);
+        inbox.arrayOfTodos.push(taskInsideInbox);
+        
+        localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+        console.log(arrayOfProjects);
+    
+        createAllTasksInProject(inbox);
+    // }
+    
+
+}
 
 function createProject(name) {
     let newProject = new Project(name);
@@ -19,13 +50,13 @@ function createProject(name) {
     newProject.arrayOfTodos.push(taskInsideProject);
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
-    console.log(arrayOfProjects);
-    
+        
     updateProjects();
 }
 
+
 function updateProjects() {
-    document.querySelector('.projects').innerHTML = '';
+    document.querySelector('.projects').textContent = '';
     for(let i = 1; i < arrayOfProjects.length; i++) {
         if(arrayOfProjects[i].name !== 'Inbox'){
             let project = document.createElement('div');
@@ -35,6 +66,7 @@ function updateProjects() {
             project.textContent = arrayOfProjects[i].name;
     
             let deleteProjectButton = document.createElement('button');
+            deleteProjectButton.classList.add('project__btn');
             deleteProjectButton.textContent = 'x';
             
             deleteProjectButton.addEventListener('click', () => {
@@ -50,31 +82,6 @@ function updateProjects() {
     }
 }
 
-(function createInbox() {
-    let inbox = new Project('Inbox');
-
-    let inboxContainer = document.createElement('div');
-    inboxContainer.className = 'inbox';
-    
-    let taskInsideInbox = TodoButton(inbox);
-    inbox.arrayOfTodos.push(taskInsideInbox);
-
-    arrayOfProjects.push(inbox);
-
-    updateCurrentProject('Inbox');
-
-    document.querySelector('.inbox').addEventListener('click', () => {
-        createAllTasksInProject(inbox);
-    });
-
-    document.querySelector('.today').addEventListener('click', createTodaysTasks);
-
-    document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
-
-    document.querySelector('.inbox').appendChild(inboxContainer);
-
-})();
-
 function getDate() {
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
@@ -87,8 +94,8 @@ function getDate() {
 }
 
 function createTodaysTasks() {
-    document.querySelector('.content').innerHTML = '';
-    document.querySelector('.create-button').innerHTML = '';
+    document.querySelector('.content').textContent = '';
+    document.querySelector('.create-button').textContent = '';
     let todayContainer = document.createElement('div');
     todayContainer.className = 'today';
 
@@ -107,9 +114,9 @@ function createTodaysTasks() {
     document.querySelector('.today').appendChild(todayContainer);
 };
 
-function createUpcomingTasks(){
-    document.querySelector('.content').innerHTML = '';
-    document.querySelector('.create-button').innerHTML = '';
+function createUpcomingTasks() {
+    document.querySelector('.content').textContent = '';
+    document.querySelector('.create-button').textContent = '';
     let upcomingContainer = document.createElement('div');
     upcomingContainer.className = 'upcoming';
 
@@ -145,8 +152,8 @@ function createUpcomingTasks(){
 
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
     if (!indexOfTodayTask){
-        document.querySelector('.content').innerHTML = '';
-        document.querySelector('.create-button').innerHTML = '';
+        document.querySelector('.content').textContent = '';
+        document.querySelector('.create-button').textContent = '';
         updateCurrentProject(project);
     } 
     
@@ -208,7 +215,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
 
-function updateCurrentProject(project){
+function updateCurrentProject(project) {
     (project.name) ? document.querySelector('.project-name').textContent = project.name : document.querySelector('.project-name').textContent = project;
 }
 
@@ -217,6 +224,7 @@ function inputProjectName() {
     
     var projectsDiv = document.querySelector('.projects');
     let closeButton = document.createElement('button');
+    closeButton.classList.add('projects__btn', 'projects__btn--close');
     closeButton.textContent = 'x';
     closeButton.addEventListener('click', () => {
         projectsDiv.removeChild(inputForProjectName);
@@ -227,10 +235,13 @@ function inputProjectName() {
     
     var inputForProjectName = document.createElement('input');
     inputForProjectName.setAttribute('type', 'text');
+    inputForProjectName.classList.add('projects__name-input');
     
     projectsDiv.appendChild(inputForProjectName);
     
     var submitButtonForProjectName = document.createElement('button');
+    closeButton.classList.add('projects__btn', 'projects__btn--submit');
+
     projectsDiv.appendChild(closeButton);
     projectsDiv.appendChild(submitButtonForProjectName);
     submitButtonForProjectName.textContent = 'Ok';
@@ -242,7 +253,7 @@ function inputProjectName() {
         if(name && name.length < 16 && checkIdenticalProject(name)) {
             projectsDiv.removeChild(inputForProjectName);
             projectsDiv.removeChild(submitButtonForProjectName);
-            document.querySelector('.create-button').innerHTML = '';
+            document.querySelector('.create-button').textContent = '';
             document.querySelector('.project-name').textContent = name;
             createProject(name);
             this.addEventListener('click', inputProjectName);
@@ -269,15 +280,15 @@ function deleteTask(newProject, numberOfTask) {
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
 
-function deleteProject(newProject){
+function deleteProject(newProject) {
     for(let i = 0; i < arrayOfProjects.length; i++){
         if(arrayOfProjects[i] == newProject){
             arrayOfProjects.splice(i, 1);
         }
     }
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
-    document.querySelector('.content').innerHTML = '';
-    document.querySelector('.create-button').innerHTML = '';
+    document.querySelector('.content').textContent = '';
+    document.querySelector('.create-button').textContent = '';
     document.querySelector('.project-name').textContent = '';
     updateProjects();
 }
