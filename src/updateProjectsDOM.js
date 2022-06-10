@@ -1,9 +1,16 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
+
 let arrayOfProjects = [];
+// console.log(JSON.parse(localStorage.getItem('projects') || []));
+if (JSON.parse(localStorage.getItem('projects') || [])) {
+    arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+    updateProjects();
+}
+
+
 function createProject(name) {
     let newProject = new Project(name);
-    
     arrayOfProjects.push(newProject);
     
     document.querySelector('.content').textContent = '';
@@ -11,30 +18,35 @@ function createProject(name) {
     let taskInsideProject = TodoButton(newProject);
     newProject.arrayOfTodos.push(taskInsideProject);
     
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+    console.log(arrayOfProjects);
+    
     updateProjects();
 }
 
 function updateProjects() {
     document.querySelector('.projects').innerHTML = '';
     for(let i = 1; i < arrayOfProjects.length; i++) {
-        let project = document.createElement('div');
-        project.className = 'project';
-        
-        document.querySelector('.projects').appendChild(project);
-        project.textContent = arrayOfProjects[i].name;
-
-        let deleteProjectButton = document.createElement('button');
-        deleteProjectButton.textContent = 'x';
-        
-        deleteProjectButton.addEventListener('click', () => {
-            deleteProject(arrayOfProjects[i]);
-        });
-
-        project.addEventListener('click', () => {
-            createAllTasksInProject(arrayOfProjects[i]);
-        });
-
-        project.appendChild(deleteProjectButton);
+        if(arrayOfProjects[i].name !== 'Inbox'){
+            let project = document.createElement('div');
+            project.className = 'project';
+            
+            document.querySelector('.projects').appendChild(project);
+            project.textContent = arrayOfProjects[i].name;
+    
+            let deleteProjectButton = document.createElement('button');
+            deleteProjectButton.textContent = 'x';
+            
+            deleteProjectButton.addEventListener('click', () => {
+                deleteProject(arrayOfProjects[i]);
+            });
+    
+            project.addEventListener('click', () => {
+                createAllTasksInProject(arrayOfProjects[i]);
+            });
+    
+            project.appendChild(deleteProjectButton);
+        }
     }
 }
 
@@ -60,6 +72,7 @@ function updateProjects() {
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
 
     document.querySelector('.inbox').appendChild(inboxContainer);
+
 })();
 
 function getDate() {
@@ -192,6 +205,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         }
     }
     if(!indexOfTodayTask) TodoButton(project);
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
 
 function updateCurrentProject(project){
@@ -225,24 +239,34 @@ function inputProjectName() {
     submitButtonForProjectName.addEventListener('click', () => {
         let name = inputForProjectName.value;
         
-        console.log(arrayOfProjects);
-        if(name && name.length < 16 && !arrayOfProjects.includes(name)) {
+        if(name && name.length < 16 && checkIdenticalProject(name)) {
             projectsDiv.removeChild(inputForProjectName);
             projectsDiv.removeChild(submitButtonForProjectName);
             document.querySelector('.create-button').innerHTML = '';
             document.querySelector('.project-name').textContent = name;
             createProject(name);
-        }else if(arrayOfProjects.includes(name)) {
-            console.log('Such project already exists');
+            this.addEventListener('click', inputProjectName);
+        }else if(checkIdenticalProject(name) == false) {
+            alert('Project names should be different');
+            inputForProjectName.value = '';
         }else if(name.length >= 16){
             alert('Project name should be less than 16 characters');
+        }else if(!name){
+            alert('Enter project name');
         }
-        this.addEventListener('click', inputProjectName);
     });
+}
+
+function checkIdenticalProject(name) {
+    for (let i = 0; i < arrayOfProjects.length; i++) {
+        if(arrayOfProjects[i].name == name) return false;
+    }
+    return true;
 }
 
 function deleteTask(newProject, numberOfTask) {
     newProject.arrayOfTodos.splice(numberOfTask, 1); 
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
 
 function deleteProject(newProject){
@@ -251,11 +275,11 @@ function deleteProject(newProject){
             arrayOfProjects.splice(i, 1);
         }
     }
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
     document.querySelector('.content').innerHTML = '';
     document.querySelector('.create-button').innerHTML = '';
     document.querySelector('.project-name').textContent = '';
     updateProjects();
-
 }
 
-export {inputProjectName, createAllTasksInProject}
+export {inputProjectName, createAllTasksInProject, arrayOfProjects}

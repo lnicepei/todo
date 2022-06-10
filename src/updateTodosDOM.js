@@ -1,5 +1,5 @@
 import { Todo } from "./todos";
-import { createAllTasksInProject } from "./updateProjectsDOM";
+import { createAllTasksInProject, arrayOfProjects } from "./updateProjectsDOM";
 
 function TodoButton(newProject) {
     let todoButton = document.createElement('button');
@@ -29,17 +29,24 @@ function createPopup(newProject) {
 }
 
 function getDataFromForm(e) {
-    
     let name = document.getElementById('taskname').value;
     let description = document.getElementById('description').value;
     let date = document.getElementById('date').value;
     let priority = document.getElementById('priority').value;
-    let task = Todo(name, description, date, priority);
 
-    let popup = document.querySelector('.popup-container');
+    if (name) {
+        let task = Todo(name, description, date, priority)
+        e.currentTarget.parameter.arrayOfTodos.push(task);
+        localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
-    e.currentTarget.parameter.arrayOfTodos.push(task);
-    popup.style.transform = 'scale(0)';
-    createAllTasksInProject(e.currentTarget.parameter);
+        let popup = document.querySelector('.popup-container');
+        popup.style.transform = 'scale(0)';
+
+        createAllTasksInProject(e.currentTarget.parameter);
+    }else {
+        alert('Enter task name');
+    }
+
 }
+
 export { TodoButton }
