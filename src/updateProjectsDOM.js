@@ -5,11 +5,12 @@ let arrayOfProjects = [];
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
+        console.log(arrayOfProjects);
         arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+        console.log(arrayOfProjects);
         updateProjects();
     }
     createInbox();
-            
     
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     
@@ -17,28 +18,26 @@ let arrayOfProjects = [];
 })();
 
 function createInbox() {
-    let inbox = new Project('Inbox');
-    console.log(checkIdenticalProject(inbox));
+    // let inbox = new Project('Inbox');
     
-    // if (!checkIdenticalProject(inbox)) {
-        document.querySelector('.inbox').addEventListener('click', () => {
-            createAllTasksInProject(inbox);
-            updateCurrentProject('Inbox'); // Updates current working project 
-        });
-
-        arrayOfProjects.push(inbox);
+    // // if (!checkIdenticalProject(inbox)) {
         
-        let taskInsideInbox = TodoButton(inbox);
-        inbox.arrayOfTodos.push(taskInsideInbox);
+        //     if(checkIdenticalProject(inbox) && 'projects' in localStorage) arrayOfProjects.push(inbox);
         
-        localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
-        console.log(arrayOfProjects);
-    
-        createAllTasksInProject(inbox);
-    // }
-    
-
-}
+        //     let taskInsideInbox = TodoButton(inbox);
+        //     inbox.arrayOfTodos.push(taskInsideInbox);
+            
+        //     createAllTasksInProject(inbox);
+        // // }
+        if (checkIdenticalProject()) {
+            let inbox = createProject('Inbox');
+            document.querySelector('.inbox').addEventListener('click', () => {
+                createAllTasksInProject(inbox);
+                updateCurrentProject('Inbox'); // Updates current working project 
+            });
+        }
+        
+};
 
 function createProject(name) {
     let newProject = new Project(name);
@@ -50,10 +49,11 @@ function createProject(name) {
     newProject.arrayOfTodos.push(taskInsideProject);
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+
+    if(name == 'Inbox') return newProject;
         
     updateProjects();
 }
-
 
 function updateProjects() {
     document.querySelector('.projects').textContent = '';
