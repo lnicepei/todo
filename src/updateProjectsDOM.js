@@ -27,14 +27,14 @@ function createInbox() {
             
         //     createAllTasksInProject(inbox);
         // // }
-        updateCurrentProject('Inbox'); // Updates current working project 
-        if (checkIdenticalProject()) {
-            let inbox = createProject('Inbox');
-            document.querySelector('.inbox').addEventListener('click', () => {
-                createAllTasksInProject(inbox);
-            });
-        }
-        
+    updateCurrentProject('Inbox'); // Updates current working project 
+    
+    if (checkIdenticalProject()) {
+        let inbox = createProject('Inbox');
+        document.querySelector('.inbox').addEventListener('click', () => {
+            createAllTasksInProject(inbox);
+        });
+    }
 };
 
 function createProject(name) {
@@ -102,18 +102,26 @@ function createTodaysTasks() {
     updateCurrentProject('Today');
    
     for(let i in arrayOfProjects) {
-        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
-            if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
-                console.log(1);
-                createAllTasksInProject(arrayOfProjects[i], f);
+        // for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
+        //     if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
+        //         console.log(1);
+        //         createAllTasksInProject(arrayOfProjects[i], f);
+        //     }
+        // }
+        arrayOfProjects[i].arrayOfTodos.forEach(todo => {
+            if(todo){
+                if(todo.date == today) createAllTasksInProject(arrayOfProjects[i], 1);
             }
-        }
+        })
     }
+
+    // let countProjects = 1;
 
     // arrayOfProjects.forEach(project => {
     //     const todayArray = project.arrayOfTodos.filter(function(task){
     //         if(task){
-    //             if(task.date == today) return true;
+    //             if(task.date == today) createAllTasksInProject(arrayOfProjects[countProjects]);
+    //             countProjects++;
     //         } 
     //         // console.log(task.date);
     //         // console.log(task.date);
