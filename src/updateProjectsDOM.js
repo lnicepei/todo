@@ -5,9 +5,7 @@ let arrayOfProjects = [];
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
-        console.log(arrayOfProjects);
-        arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
-        console.log(arrayOfProjects);
+        // arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
         updateProjects();
     }
     createInbox();
@@ -29,11 +27,11 @@ function createInbox() {
             
         //     createAllTasksInProject(inbox);
         // // }
+        updateCurrentProject('Inbox'); // Updates current working project 
         if (checkIdenticalProject()) {
             let inbox = createProject('Inbox');
             document.querySelector('.inbox').addEventListener('click', () => {
                 createAllTasksInProject(inbox);
-                updateCurrentProject('Inbox'); // Updates current working project 
             });
         }
         
@@ -106,10 +104,22 @@ function createTodaysTasks() {
     for(let i in arrayOfProjects) {
         for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
             if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
+                console.log(1);
                 createAllTasksInProject(arrayOfProjects[i], f);
             }
         }
     }
+
+    // arrayOfProjects.forEach(project => {
+    //     const todayArray = project.arrayOfTodos.filter(function(task){
+    //         if(task){
+    //             if(task.date == today) return true;
+    //         } 
+    //         // console.log(task.date);
+    //         // console.log(task.date);
+    //     });
+    //     console.log(todayArray);
+    // });
 
     document.querySelector('.today').appendChild(todayContainer);
 };
