@@ -6,7 +6,7 @@ console.log(arrayOfProjects);
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
-        arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+        // arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
     }else{
     }
     createInbox();
@@ -43,8 +43,9 @@ function createProject(name) {
     updateProjects();
 }
 
-function updateProjects() {
+function updateProjects(index) {
     document.querySelector('.projects').textContent = '';
+
     arrayOfProjects.forEach(projectInArray => {
         let project = document.createElement('div');
         project.className = 'project';
@@ -60,14 +61,15 @@ function updateProjects() {
         });
         
         project.addEventListener('click', () => {
-            createAllTasksInProject(projectInArray);
+            if(!index) createAllTasksInProject(projectInArray);
+            if(!index) console.log('no index');
         });
             
         project.appendChild(deleteProjectButton);
         if(projectInArray.name !== 'Inbox'){
             document.querySelector('.projects').appendChild(project);
         }
-    })
+    });
 }
 
 function getDate() {
@@ -84,31 +86,21 @@ function getDate() {
 function createTodaysTasks() {
     document.querySelector('.content').textContent = '';
     document.querySelector('.create-button').textContent = '';
+    
     let todayContainer = document.createElement('div');
     todayContainer.className = 'today';
 
     let today = getDate();
 
-    let indexForAllTasks = 0;
-
     updateCurrentProject('Today');
-   
-    // for(let i in arrayOfProjects) {
-    //     arrayOfProjects[i].arrayOfTodos.forEach(todo => {
-    //         if(todo) {
-    //             if(todo.date == today) createAllTasksInProject(arrayOfProjects[i], indexForAllTasks);
-    //         }
-    //         indexForAllTasks++;
-    //     })
-    // }
 
-    for(let i in arrayOfProjects) {
-        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
-            if(arrayOfProjects[i].arrayOfTodos[f].date == today) {
-                createAllTasksInProject(arrayOfProjects[i], f);
+    arrayOfProjects.forEach(project => {
+        for (let f = 1; f < project.arrayOfTodos.length; f++) {
+            if(project.arrayOfTodos[f].date == today) {
+                createAllTasksInProject(project, f);
             }
         }
-    }
+    })
     document.querySelector('.today').appendChild(todayContainer);
 };
 
@@ -156,7 +148,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
     }
 
     let numberOfTask = 0;
-    
+    console.log(project);
     // project.arrayOfTodos.forEach(todo => {
     //     console.log(todo);
     // });
@@ -281,16 +273,15 @@ function deleteTask(newProject, numberOfTask) {
 }
 
 function deleteProject(newProject) {
-    for(let i = 0; i < arrayOfProjects.length; i++){
-        if(arrayOfProjects[i] == newProject){
-            arrayOfProjects.splice(i, 1);
-        }
-    }
+    arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
+
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+
+    // document.querySelector('.create-button').textContent = '';
+    // document.querySelector('.project-name').textContent = '';
+    console.log(arrayOfProjects);
+    updateProjects(1);
     document.querySelector('.content').textContent = '';
-    document.querySelector('.create-button').textContent = '';
-    document.querySelector('.project-name').textContent = '';
-    updateProjects();
 }
 
 export {inputProjectName, createAllTasksInProject, arrayOfProjects}
