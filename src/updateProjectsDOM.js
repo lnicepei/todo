@@ -2,7 +2,6 @@ import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
 
 let arrayOfProjects = [];
-console.log(arrayOfProjects);
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
@@ -43,10 +42,11 @@ function createProject(name) {
     updateProjects();
 }
 
-function updateProjects(index) {
+function updateProjects() {
     document.querySelector('.projects').textContent = '';
-
+    
     arrayOfProjects.forEach(projectInArray => {
+        let deleteButtonIndex = 0;
         let project = document.createElement('div');
         project.className = 'project';
             
@@ -58,11 +58,11 @@ function updateProjects(index) {
         
         deleteProjectButton.addEventListener('click', () => {
             deleteProject(projectInArray);
+            deleteButtonIndex = 1;
         });
         
         project.addEventListener('click', () => {
-            if(!index) createAllTasksInProject(projectInArray);
-            if(!index) console.log('no index');
+            if(deleteButtonIndex == 0) createAllTasksInProject(projectInArray);
         });
             
         project.appendChild(deleteProjectButton);
@@ -147,11 +147,6 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         updateCurrentProject(project);
     }
 
-    let numberOfTask = 0;
-    console.log(project);
-    // project.arrayOfTodos.forEach(todo => {
-    //     console.log(todo);
-    // });
     for(let f = 1; f < project.arrayOfTodos.length; f++) {
         let taskOnTheScreen = document.createElement('div');
         taskOnTheScreen.className = 'task';
@@ -273,14 +268,15 @@ function deleteTask(newProject, numberOfTask) {
 }
 
 function deleteProject(newProject) {
+    console.log(arrayOfProjects);
     arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
+    console.log(arrayOfProjects);
 
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
     // document.querySelector('.create-button').textContent = '';
     // document.querySelector('.project-name').textContent = '';
-    console.log(arrayOfProjects);
-    updateProjects(1);
+    updateProjects();
     document.querySelector('.content').textContent = '';
 }
 
