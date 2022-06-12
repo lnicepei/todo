@@ -96,9 +96,11 @@ function createTodaysTasks() {
     updateCurrentProject('Today');
 
     arrayOfProjects.forEach(project => {
-        for (let f = 1; f < project.arrayOfTodos.length; f++) {
-            if(project.arrayOfTodos[f].date == today) {
-                createAllTasksInProject(project, f);
+        for (let f in project.arrayOfTodos) {
+            if(project.arrayOfTodos[f]){
+                if(project.arrayOfTodos[f].date == today) {
+                    createAllTasksInProject(project, f);
+                }
             }
         }
     })
