@@ -23,7 +23,6 @@ function createPopup(newProject) {
             popup.style.transform = 'scale(0)';
         }
     });
-
     document.querySelector(".submit-button").addEventListener("click", getDataFromForm, false);
     document.querySelector(".submit-button").parameter = newProject;
 }
