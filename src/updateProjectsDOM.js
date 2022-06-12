@@ -57,6 +57,7 @@ function updateProjects() {
         deleteProjectButton.textContent = 'x';
         
         deleteProjectButton.addEventListener('click', () => {
+            document.querySelector('.create-button').textContent = '';
             deleteProject(projectInArray);
             deleteButtonIndex = 1;
         });
@@ -274,8 +275,6 @@ function deleteProject(newProject) {
 
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
-    // document.querySelector('.create-button').textContent = '';
-    // document.querySelector('.project-name').textContent = '';
     updateProjects();
     document.querySelector('.content').textContent = '';
 }
