@@ -167,22 +167,22 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         
         let checkBox = document.createElement('div');
         checkBox.textContent = '';
-        checkBox.className = 'checkbox';
+        checkBox.className = 'task__checkbox';
         taskOnTheScreen.appendChild(checkBox);
 
         let taskName = document.createElement('div');
         taskName.textContent = project.arrayOfTodos[f].name;
-        taskName.className = 'taskname';
+        taskName.className = 'task__name';
         taskOnTheScreen.appendChild(taskName);
 
         let projectFather = document.createElement('div');
         projectFather.textContent = 'Project: ' + project.name;
-        projectFather.className = 'father-project';
+        projectFather.className = 'task__origin';
         taskOnTheScreen.appendChild(projectFather);
 
         let description = document.createElement('div');
         description.textContent = project.arrayOfTodos[f].description;
-        description.className = 'description';
+        description.className = 'task__description';
         taskOnTheScreen.appendChild(description);
 
         if(project.arrayOfTodos[f].priority == 1) checkBox.style.background = 'red';
@@ -203,7 +203,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
 
         let datePicker = document.createElement('div');
         taskOnTheScreen.appendChild(datePicker);
-        datePicker.className = 'date';
+        datePicker.className = 'task__date';
         datePicker.textContent = project.arrayOfTodos[f].date;
 
         if(indexOfTodayTask) {

@@ -98,7 +98,7 @@ body{
     border: 1px solid hsla(0,0%,100%,.4);
 }
 
-.checkbox{
+.task__checkbox{
     width: 25px;
     height: 25px;
     display: flex;
