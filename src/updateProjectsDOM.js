@@ -1,6 +1,6 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import {  } from 'date-fns';
+import { formatDuration, intervalToDuration } from 'date-fns';
 
 let arrayOfProjects = [];
 
@@ -23,8 +23,8 @@ function createInbox() {
     let inbox = new Project('Inbox');
     if(arrayOfProjects.filter(project => project.name == 'Inbox').length == 0) arrayOfProjects.push(inbox);
     
-    let taskInsideInbox = TodoButton(inbox);
-    inbox.arrayOfTodos.push(taskInsideInbox);
+    TodoButton(inbox);
+    // inbox.arrayOfTodos.push(taskInsideInbox);
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
@@ -176,10 +176,10 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         taskName.className = 'task__name';
         taskOnTheScreen.appendChild(taskName);
 
-        let projectFather = document.createElement('div');
-        projectFather.textContent = 'Project: ' + project.name;
-        projectFather.className = 'task__origin';
-        taskOnTheScreen.appendChild(projectFather);
+        let taskOrigin = document.createElement('div');
+        taskOrigin.textContent = 'Project: ' + project.name;
+        taskOrigin.className = 'task__origin';
+        taskOnTheScreen.appendChild(taskOrigin);
 
         let description = document.createElement('div');
         description.textContent = project.arrayOfTodos[f].description;
