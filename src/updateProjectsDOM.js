@@ -264,9 +264,6 @@ function inputProjectName() {
 }
 function checkIdenticalProject(name) {
     if(arrayOfProjects.filter(project => project.name == name).length > 0) return true;
-    // for (let i in arrayOfProjects) {
-    //     if(arrayOfProjects[i].name == name) return true;
-    // }
     return false;
 }
 function deleteTask(newProject, numberOfTask) {
@@ -276,7 +273,9 @@ function deleteTask(newProject, numberOfTask) {
 function deleteProject(newProject) {
     arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+    
     updateProjects();
+
     document.querySelector('.content').textContent = '';
 }
 export {inputProjectName, createAllTasksInProject, arrayOfProjects}
