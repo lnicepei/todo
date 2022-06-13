@@ -23,8 +23,8 @@ function createPopup(newProject) {
             popup.style.transform = 'scale(0)';
         }
     });
-    document.querySelector(".submit-button").addEventListener("click", getDataFromForm, false);
-    document.querySelector(".submit-button").parameter = newProject;
+    document.querySelector(".form__submit-button").addEventListener("click", getDataFromForm, false);
+    document.querySelector(".form__submit-button").parameter = newProject;
 }
 
 function getDataFromForm(e) {
