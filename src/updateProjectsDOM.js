@@ -44,8 +44,7 @@ function createProject(name) {
     
     document.querySelector('.content').textContent = '';
     
-    let taskInsideProject = TodoButton(newProject);
-    newProject.arrayOfTodos.push(taskInsideProject);
+    TodoButton(newProject);
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
@@ -136,7 +135,7 @@ function createUpcomingTasks() {
     updateCurrentProject('Upcoming');
 
     for(let i in arrayOfProjects) {
-        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
+        for(let f = 0; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
             if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) > yyyy) {
                 createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
             }
@@ -162,7 +161,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         updateCurrentProject(project);
     }
 
-    for(let f = 1; f < project.arrayOfTodos.length; f++) {
+    for(let f = 0; f < project.arrayOfTodos.length; f++) {
         let taskOnTheScreen = document.createElement('div');
         taskOnTheScreen.className = 'task';
         
