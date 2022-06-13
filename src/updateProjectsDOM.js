@@ -5,10 +5,11 @@ let arrayOfProjects = [];
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
-        // arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+        arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
     }else{
     }
     createInbox();
+    
     updateProjects();
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     
@@ -17,12 +18,22 @@ let arrayOfProjects = [];
 
 function createInbox() {
     updateCurrentProject('Inbox'); // Updates current working project 
+    
+    let inbox = new Project('Inbox');
+    if(arrayOfProjects.filter(project => project.name == 'Inbox').length == 0) arrayOfProjects.push(inbox);
+    
+    let taskInsideInbox = TodoButton(inbox);
+    inbox.arrayOfTodos.push(taskInsideInbox);
+    
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
-    if (checkIdenticalProject()) {
-    }
-    let inbox = createProject('Inbox');
+    (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
+    
+    // here is the trick. the inbox created for the second time does not have any tasks
+    
     document.querySelector('.inbox').addEventListener('click', () => {
-        createAllTasksInProject(inbox);
+        console.log(arrayOfProjects);
+        (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
     });
 };
 
@@ -35,7 +46,7 @@ function createProject(name) {
     let taskInsideProject = TodoButton(newProject);
     newProject.arrayOfTodos.push(taskInsideProject);
     
-    if(name !== 'Inbox') localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
+    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
     if(name == 'Inbox') return newProject;
         
@@ -105,7 +116,7 @@ function createTodaysTasks() {
         }
     })
     document.querySelector('.today').appendChild(todayContainer);
-};
+}
 
 function createUpcomingTasks() {
     document.querySelector('.content').textContent = '';
@@ -259,9 +270,10 @@ function inputProjectName() {
 }
 
 function checkIdenticalProject(name) {
-    arrayOfProjects.forEach(project => {
-        if(project.name == name) return true;
-    } );
+    // arrayOfProjects.forEach(project => project.name == name);
+    for (let i in arrayOfProjects) {
+        if(arrayOfProjects[i].name == name) return true;
+    }
     return false;
 }
 
@@ -271,9 +283,7 @@ function deleteTask(newProject, numberOfTask) {
 }
 
 function deleteProject(newProject) {
-    console.log(arrayOfProjects);
     arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
-    console.log(arrayOfProjects);
 
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
