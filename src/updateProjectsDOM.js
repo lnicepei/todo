@@ -1,13 +1,12 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import { isAfter, isToday, parseISO, format } from 'date-fns';
+import { isAfter, isToday } from 'date-fns';
 
 let arrayOfProjects = [];
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
         arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
-        console.log(arrayOfProjects);
     }
 
     createInbox();
@@ -30,7 +29,6 @@ function createInbox() {
     (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
     
     document.querySelector('.inbox').addEventListener('click', () => {
-        console.log(arrayOfProjects);
         (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
     });
 }
@@ -94,7 +92,7 @@ function createTodaysTasks() {
     arrayOfProjects.forEach(project => {
         for (let f in project.arrayOfTodos) {
             if(project.arrayOfTodos[f]){
-                if(isToday(parseISO(project.arrayOfTodos[f].date))) {
+                if(isToday(new Date(project.arrayOfTodos[f].date))) {
                     createAllTasksInProject(project, f);
                 }
             }
@@ -115,7 +113,7 @@ function createUpcomingTasks() {
 
     arrayOfProjects.forEach(project => {
         for(let f in project.arrayOfTodos) {
-            if(isAfter(parseISO(project.arrayOfTodos[f].date), new Date())){
+            if(isAfter(new Date(project.arrayOfTodos[f].date), new Date())){
                 createAllTasksInProject(project, f, 'upcoming');
             }
         }
@@ -158,7 +156,6 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskDate = document.createElement('div');
         taskDiv.appendChild(taskDate);
         taskDate.className = 'task__date';
-        // taskDate.textContent = format(parseISO(project.arrayOfTodos[f].date), 'd MMM y (EE)');
         taskDate.textContent = project.arrayOfTodos[f].date;
 
         switch (project.arrayOfTodos[f].priority) {
