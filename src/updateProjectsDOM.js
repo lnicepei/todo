@@ -1,7 +1,9 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import { formatDuration, intervalToDuration } from 'date-fns';
+import { isAfter, isToday, parseISO } from 'date-fns';
+
 let arrayOfProjects = [];
+
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
         arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
@@ -14,6 +16,7 @@ let arrayOfProjects = [];
     
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
 })();
+
 function createInbox() {
     updateCurrentProject('Inbox'); // Updates current working project 
     
@@ -32,7 +35,8 @@ function createInbox() {
         console.log(arrayOfProjects);
         (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
     });
-};
+}
+
 function createProject(name) {
     let newProject = new Project(name);
     arrayOfProjects.push(newProject);
@@ -48,6 +52,7 @@ function createProject(name) {
         
     updateProjects();
 }
+
 function updateProjects() {
     document.querySelector('.projects').textContent = '';
     
@@ -78,16 +83,7 @@ function updateProjects() {
         }
     });
 }
-function getDate() {
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
 
-    today = yyyy + '-' + mm + '-' + dd;
-
-    return today;
-}
 function createTodaysTasks() {
     document.querySelector('.content').textContent = '';
     document.querySelector('.create-button').textContent = '';
@@ -95,20 +91,21 @@ function createTodaysTasks() {
     let todayContainer = document.createElement('div');
     todayContainer.className = 'today';
 
-    let today = getDate();
     updateCurrentProject('Today');
 
     arrayOfProjects.forEach(project => {
         for (let f in project.arrayOfTodos) {
             if(project.arrayOfTodos[f]){
-                if(project.arrayOfTodos[f].date == today) {
+                if(isToday(parseISO(project.arrayOfTodos[f].date)) {
                     createAllTasksInProject(project, f);
                 }
             }
         }
-    })
+    });
+
     document.querySelector('.today').appendChild(todayContainer);
 }
+
 function createUpcomingTasks() {
     document.querySelector('.content').textContent = '';
     document.querySelector('.create-button').textContent = '';
@@ -116,33 +113,19 @@ function createUpcomingTasks() {
     let upcomingContainer = document.createElement('div');
     upcomingContainer.className = 'upcoming';
 
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
-
-    today = yyyy + '/' + mm + '/' + dd;   
-
     updateCurrentProject('Upcoming');
 
-    for(let i in arrayOfProjects) {
-        for(let f = 1; f < arrayOfProjects[i].arrayOfTodos.length; f++) {
-            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) > yyyy) {
-                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
-            }
-            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
-               arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) > mm) {
-                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
-            }
-            if(arrayOfProjects[i].arrayOfTodos[f].date.substr(0, 4) == yyyy &&
-               arrayOfProjects[i].arrayOfTodos[f].date.substr(5, 2) == mm &&
-               arrayOfProjects[i].arrayOfTodos[f].date.substr(8, 2) > dd) {
-                createAllTasksInProject(arrayOfProjects[i], f, 'upcoming');
+    arrayOfProjects.forEach(project => {
+        for(let f = 1; f < project.arrayOfTodos.length; f++) {
+            if(isAfter(parseISO(project.arrayOfTodos[f].date), new Date())){
+                createAllTasksInProject(project, f, 'upcoming');
             }
         }
-    }
+    });
+
     document.querySelector('.upcoming').appendChild(upcomingContainer);
 }
+
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
     if (!indexOfTodayTask){
         document.querySelector('.content').textContent = '';
@@ -206,9 +189,11 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
+
 function updateCurrentProject(project) {
     (project.name) ? document.querySelector('.project-name').textContent = project.name : document.querySelector('.project-name').textContent = project;
 }
+
 function inputProjectName() {
     this.removeEventListener('click', inputProjectName);
     
@@ -237,8 +222,7 @@ function inputProjectName() {
     submitButtonForProjectName.textContent = 'Ok';
 
     projectsDiv.appendChild(submitButtonForProjectName);
-    
-    
+
     submitButtonForProjectName.addEventListener('click', () => {
         let name = inputForProjectName.value;
         
@@ -255,21 +239,24 @@ function inputProjectName() {
         }else if(checkIdenticalProject(name) == true) {
             alert('Project names should be different');
             inputForProjectName.value = '';
-        }else if(name.length >= 16){
+        }else if(name.length >= 16) {
             alert('Project name should be less than 16 characters');
-        }else if(!name){
+        }else if(!name) {
             alert('Enter project name');
         }
     });
 }
+
 function checkIdenticalProject(name) {
     if(arrayOfProjects.filter(project => project.name == name).length > 0) return true;
     return false;
 }
+
 function deleteTask(newProject, numberOfTask) {
     newProject.arrayOfTodos.splice(numberOfTask, 1); 
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
+
 function deleteProject(newProject) {
     arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
@@ -278,4 +265,5 @@ function deleteProject(newProject) {
 
     document.querySelector('.content').textContent = '';
 }
+
 export {inputProjectName, createAllTasksInProject, arrayOfProjects}
