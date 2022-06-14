@@ -1,6 +1,6 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import { isAfter, isToday } from 'date-fns';
+import { intervalToDuration, isAfter, isToday } from 'date-fns';
 
 let arrayOfProjects = [];
 
@@ -84,9 +84,6 @@ function createTodaysTasks() {
     document.querySelector('.content').textContent = '';
     document.querySelector('.create-button').textContent = '';
     
-    let todayContainer = document.createElement('div');
-    todayContainer.className = 'today';
-
     updateCurrentProject('Today');
 
     arrayOfProjects.forEach(project => {
@@ -96,16 +93,11 @@ function createTodaysTasks() {
             }
         }
     });
-
-    document.querySelector('.today').appendChild(todayContainer);
 }
 
 function createUpcomingTasks() {
     document.querySelector('.content').textContent = '';
     document.querySelector('.create-button').textContent = '';
-
-    let upcomingContainer = document.createElement('div');
-    upcomingContainer.className = 'upcoming';
 
     updateCurrentProject('Upcoming');
 
@@ -116,8 +108,6 @@ function createUpcomingTasks() {
             }
         }
     });
-
-    document.querySelector('.upcoming').appendChild(upcomingContainer);
 }
 
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
@@ -141,15 +131,21 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         taskName.className = 'task__name';
         taskDiv.appendChild(taskName);
 
-        const taskOrigin = document.createElement('div');
-        taskOrigin.textContent = 'Project: ' + project.name;
-        taskOrigin.className = 'task__origin';
-        taskDiv.appendChild(taskOrigin);
+        if(indexOfTodayTask || origin){
+            const taskOrigin = document.createElement('div');
+            taskOrigin.textContent = 'Project: ' + project.name;
+            taskOrigin.className = 'task__origin';
+            taskDiv.appendChild(taskOrigin);
+        }
 
-        const taskDescription = document.createElement('div');
-        taskDescription.textContent = project.arrayOfTodos[f].taskDescription;
-        taskDescription.className = 'task__taskDescription';
-        taskDiv.appendChild(taskDescription);
+        // const taskTimeLeft = document.createElement('div');
+        // taskTimeLeft.textContent = intervalToDuration({
+        //     start: new Date(project.arrayOfTodos[f].date),
+        //     end: new Date(),
+        // });
+        
+        // taskTimeLeft.className = 'task__time-left';
+        // taskDiv.appendChild(taskTimeLeft);
         
         const taskDate = document.createElement('div');
         taskDiv.appendChild(taskDate);
