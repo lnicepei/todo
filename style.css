@@ -1,24 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 *{
     margin: 0;
     padding: 0;
 }
 body{
-    /* display: flex;
-    flex-direction: row; */
     height: 100vh;
     width: 100vw;
-    background: #22252a;
+    background: #f6f8fa;
 }
 
 .sidebar{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
     width: 15vw;
     height: 100vh;
-    background: #2d3035;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
-    color: #f5f5f4;
+    color: black;
     position: fixed;
     top: 0;
     padding: 20px;
@@ -29,12 +27,29 @@ body{
     flex-direction: row;
     align-items: center;
     gap: 40px;
-    /* justify-content: space-around; */
+    font-size: 2rem;
+}
+
+.inbox, .today, .upcoming{
+    padding: 10px;
+    margin: 10px;
+    background: #f7f9fa;
+    font-size: 1.5rem;
+}
+
+.project{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
 }
 
 .project-name{
-    border: 2px solid grey;
+    /* border: 2px solid grey; */
+    height: 10vh;
+    width: 100%;
+    margin-left: 25vw;
     padding-top: 4px;
+    font-size: 3rem;
 }
 
 .content{
@@ -46,7 +61,6 @@ body{
     padding-left: 15vw;
     /* margin-left: 50vw; */
     /* margin-top: 50px; */
-    background: #22252a;
 }
 
 .create-button{
@@ -91,11 +105,14 @@ body{
 
 .task {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     width: 80%;
-    background: #2d3035;
-    color: #f5f5f4;
-    border: 1px solid hsla(0,0%,100%,.4);
+    background: #f6f8fa;
+    color: black;
+    outline: 1px solid black;
+    border-radius: 20px;
+    margin: .5rem;
 }
 
 .task__checkbox{
