@@ -12,24 +12,21 @@ let arrayOfProjects = [];
     createInbox();
     
     updateProjects();
+
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
-    
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
 })();
 
 function createInbox() {
-    updateCurrentProject('Inbox'); // Updates current working project 
+    updateCurrentProject('Inbox');
     
     let inbox = new Project('Inbox');
     if(arrayOfProjects.filter(project => project.name == 'Inbox').length == 0) arrayOfProjects.push(inbox);
     
     TodoButton(inbox);
-    // inbox.arrayOfTodos.push(taskInsideInbox);
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
     (arrayOfProjects.filter(project => project.name == 'Inbox').length > 0) ? createAllTasksInProject(arrayOfProjects[0]) : createAllTasksInProject(inbox);
-    
-    // here is the trick. the inbox created for the second time does not have any tasks
     
     document.querySelector('.inbox').addEventListener('click', () => {
         console.log(arrayOfProjects);
@@ -58,12 +55,13 @@ function updateProjects() {
     
     arrayOfProjects.forEach(projectInArray => {
         let deleteButtonIndex = 0;
-        let project = document.createElement('div');
+
+        const project = document.createElement('div');
         project.className = 'project';
             
         project.textContent = projectInArray.name;
         
-        let deleteProjectButton = document.createElement('button');
+        const deleteProjectButton = document.createElement('button');
         deleteProjectButton.classList.add('project__btn');
         deleteProjectButton.textContent = 'x';
         
@@ -96,7 +94,7 @@ function createTodaysTasks() {
     arrayOfProjects.forEach(project => {
         for (let f in project.arrayOfTodos) {
             if(project.arrayOfTodos[f]){
-                if(isToday(parseISO(project.arrayOfTodos[f].date)) {
+                if(isToday(parseISO(project.arrayOfTodos[f].date))) {
                     createAllTasksInProject(project, f);
                 }
             }
@@ -127,42 +125,59 @@ function createUpcomingTasks() {
 }
 
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
-    if (!indexOfTodayTask){
+    if (!indexOfTodayTask) {
         document.querySelector('.content').textContent = '';
         document.querySelector('.create-button').textContent = '';
         updateCurrentProject(project);
     }
 
     for(let f = 1; f < project.arrayOfTodos.length; f++) {
-        let taskOnTheScreen = document.createElement('div');
-        taskOnTheScreen.className = 'task';
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task';
 
-        let checkBox = document.createElement('div');
-        checkBox.textContent = '';
-        checkBox.className = 'task__checkbox';
-        taskOnTheScreen.appendChild(checkBox);
+        const taskCheckbox = document.createElement('div');
+        taskCheckbox.textContent = '';
+        taskCheckbox.className = 'task__checkbox';
+        taskDiv.appendChild(taskCheckbox);
 
-        let taskName = document.createElement('div');
+        const taskName = document.createElement('div');
         taskName.textContent = project.arrayOfTodos[f].name;
         taskName.className = 'task__name';
-        taskOnTheScreen.appendChild(taskName);
+        taskDiv.appendChild(taskName);
 
-        let taskOrigin = document.createElement('div');
+        const taskOrigin = document.createElement('div');
         taskOrigin.textContent = 'Project: ' + project.name;
         taskOrigin.className = 'task__origin';
-        taskOnTheScreen.appendChild(taskOrigin);
+        taskDiv.appendChild(taskOrigin);
 
-        let description = document.createElement('div');
-        description.textContent = project.arrayOfTodos[f].description;
-        description.className = 'task__description';
-        taskOnTheScreen.appendChild(description);
+        const taskDescription = document.createElement('div');
+        taskDescription.textContent = project.arrayOfTodos[f].taskDescription;
+        taskDescription.className = 'task__taskDescription';
+        taskDiv.appendChild(taskDescription);
+        
+        const taskDate = document.createElement('div');
+        taskDiv.appendChild(taskDate);
+        taskDate.className = 'task__date';
+        taskDate.textContent = project.arrayOfTodos[f].date;
 
-        if(project.arrayOfTodos[f].priority == 1) checkBox.style.background = 'red';
-        if(project.arrayOfTodos[f].priority == 2) checkBox.style.background = 'orange';
-        if(project.arrayOfTodos[f].priority == 3) checkBox.style.background = 'yellow';
-        if(project.arrayOfTodos[f].priority == 0) checkBox.style.background = 'white';
-                        
-        checkBox.addEventListener('click', () => {
+        switch (project.arrayOfTodos[f].priority) {
+            case '1':
+                taskCheckbox.style.background = 'red';
+                break;
+            case '2':
+                taskCheckbox.style.background = 'orange';
+                break;
+            case '3':
+                taskCheckbox.style.background = 'yellow';
+                break;
+            case '0':
+                taskCheckbox.style.background = 'white';
+                break;
+            default:
+                break;
+        }
+
+        taskCheckbox.addEventListener('click', () => {
             deleteTask(project, f);
             if(!indexOfTodayTask) {
                 createAllTasksInProject(project);
@@ -173,15 +188,11 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
             }
         });
 
-        let datePicker = document.createElement('div');
-        taskOnTheScreen.appendChild(datePicker);
-        datePicker.className = 'task__date';
-        datePicker.textContent = project.arrayOfTodos[f].date;
 
         if(indexOfTodayTask) {
-            if(indexOfTodayTask == f) document.querySelector('.content').appendChild(taskOnTheScreen);
+            if(indexOfTodayTask == f) document.querySelector('.content').appendChild(taskDiv);
         }else {
-            document.querySelector('.content').appendChild(taskOnTheScreen);
+            document.querySelector('.content').appendChild(taskDiv);
         }
     }
 
@@ -207,6 +218,7 @@ function inputProjectName() {
         projectsDiv.removeChild(inputForProjectName);
         projectsDiv.removeChild(submitButtonForProjectName);
         projectsDiv.removeChild(closeButton);
+
         this.addEventListener('click', inputProjectName);
     });
     
