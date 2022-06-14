@@ -14,7 +14,6 @@ function TodoButton(newProject) {
 }
 
 function createPopup(newProject) {
-    // popup.style.display = 'block';
     let popup = document.querySelector('.popup-container');
     popup.style.transform = 'scale(1)';
     
@@ -32,6 +31,8 @@ function getDataFromForm(e) {
     let description = document.getElementById('description').value;
     let date = document.getElementById('date').value;
     let priority = document.getElementById('priority').value;
+
+    date = new Date(date);
 
     if (name) {
         let task = Todo(name, description, date, priority)
