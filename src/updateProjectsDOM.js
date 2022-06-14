@@ -16,7 +16,8 @@ let arrayOfProjects = [];
 
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
-})();
+})()
+
 function createInbox() {
     updateCurrentProject('Inbox');
     
@@ -113,7 +114,7 @@ function createUpcomingTasks() {
     updateCurrentProject('Upcoming');
 
     arrayOfProjects.forEach(project => {
-        for(let f = 1; f < project.arrayOfTodos.length; f++) {
+        for(let f in project.arrayOfTodos) {
             if(isAfter(parseISO(project.arrayOfTodos[f].date), new Date())){
                 createAllTasksInProject(project, f, 'upcoming');
             }
@@ -130,7 +131,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         updateCurrentProject(project);
     }
 
-    for(let f = 0; f < project.arrayOfTodos.length; f++) {
+    for(let f in project.arrayOfTodos) {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task';
 
