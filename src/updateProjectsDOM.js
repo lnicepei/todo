@@ -1,12 +1,13 @@
 import { Project } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import { isAfter, isToday, parseISO } from 'date-fns';
+import { isAfter, isToday, parseISO, format } from 'date-fns';
 
 let arrayOfProjects = [];
 
 (function checkProjectsOnReload() {
     if('projects' in localStorage){
         arrayOfProjects = JSON.parse(localStorage.getItem('projects') || []);
+        console.log(arrayOfProjects);
     }
 
     createInbox();
@@ -16,7 +17,6 @@ let arrayOfProjects = [];
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
 })();
-
 function createInbox() {
     updateCurrentProject('Inbox');
     
@@ -40,8 +40,7 @@ function createProject(name) {
 
     document.querySelector('.content').textContent = '';
 
-    let taskInsideProject = TodoButton(newProject);
-    newProject.arrayOfTodos.push(taskInsideProject);
+    TodoButton(newProject);
 
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 
@@ -131,7 +130,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         updateCurrentProject(project);
     }
 
-    for(let f = 1; f < project.arrayOfTodos.length; f++) {
+    for(let f = 0; f < project.arrayOfTodos.length; f++) {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task';
 
@@ -158,6 +157,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskDate = document.createElement('div');
         taskDiv.appendChild(taskDate);
         taskDate.className = 'task__date';
+        // taskDate.textContent = format(parseISO(project.arrayOfTodos[f].date), 'd MMM y (EE)');
         taskDate.textContent = project.arrayOfTodos[f].date;
 
         switch (project.arrayOfTodos[f].priority) {
