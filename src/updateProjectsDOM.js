@@ -15,7 +15,7 @@ let arrayOfProjects = [];
 
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
-})()
+})();
 
 function createInbox() {
     updateCurrentProject('Inbox');
@@ -91,10 +91,8 @@ function createTodaysTasks() {
 
     arrayOfProjects.forEach(project => {
         for (let f in project.arrayOfTodos) {
-            if(project.arrayOfTodos[f]){
-                if(isToday(new Date(project.arrayOfTodos[f].date))) {
-                    createAllTasksInProject(project, f);
-                }
+            if(isToday(new Date(project.arrayOfTodos[f].date))) {
+                createAllTasksInProject(project, f);
             }
         }
     });
