@@ -1,4 +1,4 @@
-import { parseISO } from "date-fns";
+import { format } from "date-fns";
 import { Todo } from "./todos";
 import { createAllTasksInProject, arrayOfProjects } from "./updateProjectsDOM";
 
@@ -34,6 +34,7 @@ function getDataFromForm(e) {
     let priority = document.getElementById('priority').value;
 
     date = new Date(date);
+    date = format(date, 'd MMM y (EE)');
 
     if (name) {
         let task = Todo(name, description, date, priority)
