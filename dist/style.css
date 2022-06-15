@@ -2,15 +2,19 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Poppins', sans-serif;
+    user-select: none;
 }
+
 body{
     height: 100vh;
     width: 100vw;
     background: #f6f8fa;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .sidebar{
-    font-family: 'Poppins', sans-serif;
     width: 15vw;
     height: 100vh;
     background: #ffffff;
@@ -27,20 +31,31 @@ body{
     flex-direction: row;
     align-items: center;
     gap: 40px;
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
-.inbox, .today, .upcoming{
+.inbox, .today, .upcoming, .project{
     padding: 10px;
     margin: 10px;
-    background: #f7f9fa;
+    background: #b1aaf5;
     font-size: 1.5rem;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.inbox:hover, .today:hover, .upcoming:hover, .project:hover{
+    transition: .5s ease;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .project{
     display: flex;
     justify-content: space-between;
     padding: 10px;
+}
+
+.project__btn{
+    color: grey;
 }
 
 .project-name{
@@ -50,6 +65,12 @@ body{
     margin-left: 25vw;
     padding-top: 4px;
     font-size: 3rem;
+    font-weight: bolder;
+}
+
+.projects__btn{
+    margin: 10px;
+    padding: 10px;
 }
 
 .content{
@@ -70,11 +91,18 @@ body{
     margin-left: 15vw;
     width: 85vw;
     height: auto;
+    font-size: 3rem;
 }
 
 .create-button__btn{
-    height: 100px;
-    width: 200px;
+    height: 71px;
+    width: 71px;
+    /* display: block;
+    margin: auto; */
+    text-align: center;
+    border-radius: 100px;
+    box-shadow:.8rem .8rem 1.4rem lightgray, 
+            -.2rem -.2rem 1.8rem white;
 }
 
 .popup-container{
@@ -82,9 +110,9 @@ body{
     justify-content: center;
     align-items: center;
     position: fixed;
+    top: 0;
+    backdrop-filter: blur(10px);
     transform: scale(0);
-    background: linear-gradient(to left, red, transparent);
-    height: 100vh;
     width: 100vw;
     z-index: 2;
 }
@@ -98,21 +126,29 @@ body{
     gap: 2rem;
 }
 
-.inbox:hover, .today:hover, .upcoming:hover{
-    transition: .5s ease;
-    background: red;
-}
 
 .task {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     width: 80%;
     background: #f6f8fa;
     color: black;
-    outline: 1px solid black;
-    border-radius: 20px;
-    margin: .5rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.task__right, .task__left{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.task__left{
+    justify-content: flex-end;
 }
 
 .task__checkbox{
@@ -123,4 +159,45 @@ body{
     color: white;
     border: 10px;
     border-radius: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.task__checkbox:hover{
+    transition: .2s linear;
+    background-color: lightgray;
+}
+
+.task__name-and-description{
+    padding-left: 10px;
+    padding-right: 200px;
+    border-left: 1px solid black;
+}
+
+.name{
+    font-size: 1.4rem;
+}
+
+.description{
+    font-size: 0.7rem;
+}
+
+.task__origin, .task__time-left{
+    border-right: 1px solid black;
+    padding: 10px;
+}
+
+.task__time-left{
+    margin-left: 10px;
+    /* padding-right: 200px; */
+}
+
+.task__date{
+    margin-left: 10px;
+    /* border-left: 1px solid black; */
+    padding: 10px;
+}
+
+.task:active{
+    transform: scale(1.005);
 }
