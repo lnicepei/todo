@@ -1,6 +1,7 @@
 import { Project, deleteProject, checkIdenticalProject } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
 import { createUpcomingTasks, createTodaysTasks, deleteTask } from './todos';
+import { formatDuration, intervalToDuration, isAfter, isToday } from "date-fns";
 
 let arrayOfProjects = [];
 
@@ -59,7 +60,7 @@ function updateProjects() {
             
         project.textContent = projectInArray.name;
         
-        const deleteProjectButton = document.createElement('button');
+        const deleteProjectButton = document.createElement('div');
         deleteProjectButton.classList.add('project__btn');
         deleteProjectButton.textContent = 'x';
         
@@ -91,49 +92,79 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task';
 
+        const taskDivLeft = document.createElement('div');
+        taskDivLeft.className = 'task__left';
+        taskDiv.appendChild(taskDivLeft);
+
+        const taskDivRight = document.createElement('div');
+        taskDivRight.className = 'task__right';
+        taskDiv.appendChild(taskDivRight);
+
+
+        const taskNameAndDescription = document.createElement('div');
+        taskNameAndDescription.className = 'task__name-and-description';
+        
         const taskCheckbox = document.createElement('div');
         taskCheckbox.textContent = '';
         taskCheckbox.className = 'task__checkbox';
-        taskDiv.appendChild(taskCheckbox);
-
+        taskDivLeft.appendChild(taskCheckbox);
+        
         const taskName = document.createElement('div');
         taskName.textContent = project.arrayOfTodos[f].name;
-        taskName.className = 'task__name';
-        taskDiv.appendChild(taskName);
+        taskName.className = 'name';
+        taskNameAndDescription.appendChild(taskName);
+        
+        const taskDescription = document.createElement('div');
+        taskDescription.textContent = project.arrayOfTodos[f].description;
+        taskDescription.className = 'description';
+        taskNameAndDescription.appendChild(taskDescription);
+        taskDivLeft.appendChild(taskNameAndDescription);
 
         if(indexOfTodayTask || origin){
             const taskOrigin = document.createElement('div');
             taskOrigin.textContent = 'Project: ' + project.name;
             taskOrigin.className = 'task__origin';
-            taskDiv.appendChild(taskOrigin);
+            taskDivRight.appendChild(taskOrigin);
         }
 
-        // const taskTimeLeft = document.createElement('div');
-        // taskTimeLeft.textContent = intervalToDuration({
-        //     start: new Date(project.arrayOfTodos[f].date),
-        //     end: new Date(),
-        // });
+        const taskTimeLeft = document.createElement('div');
+        taskTimeLeft.className = 'task__time-left';
         
-        // taskTimeLeft.className = 'task__time-left';
-        // taskDiv.appendChild(taskTimeLeft);
+        let timeRemaining = intervalToDuration({
+            start: new Date(project.arrayOfTodos[f].date),
+            end: new Date(),
+        });
+        
+        if(!indexOfTodayTask && isToday(new Date(project.arrayOfTodos[f].date))) {// time for today tasks
+            taskTimeLeft.textContent = 'today'; 
+            taskDivRight.appendChild(taskTimeLeft);
+        }
+        if(origin == 'upcoming' || isAfter(new Date(project.arrayOfTodos[f].date), new Date())){//time for tasks in the past
+            taskTimeLeft.textContent = formatDuration(timeRemaining, {
+                delimiter: ', '
+            });
+            taskTimeLeft.textContent += ' left';
+            taskDivRight.appendChild(taskTimeLeft);
+        } 
+
         
         const taskDate = document.createElement('div');
-        taskDiv.appendChild(taskDate);
+        taskDivRight.appendChild(taskDate);
         taskDate.className = 'task__date';
         taskDate.textContent = project.arrayOfTodos[f].date;
 
         switch (project.arrayOfTodos[f].priority) {
             case '1':
-                taskCheckbox.style.background = 'red';
+                taskCheckbox.style.border = '2px solid red';
                 break;
             case '2':
-                taskCheckbox.style.background = 'orange';
+                taskCheckbox.style.border = '2px solid orange';
                 break;
             case '3':
-                taskCheckbox.style.background = 'yellow';
+                taskCheckbox.style.border = '2px solid yellow';
                 break;
             case '0':
-                taskCheckbox.style.background = 'white';
+                taskCheckbox.style.border = '2px solid black';
                 break;
             default:
                 break;
@@ -172,7 +203,7 @@ function inputProjectName() {
     
     const projectsDiv = document.querySelector('.projects');
 
-    const closeButton = document.createElement('button');
+    const closeButton = document.createElement('div');
     closeButton.classList.add('projects__btn', 'projects__btn--close');
     closeButton.textContent = 'x';
 
@@ -190,7 +221,7 @@ function inputProjectName() {
     
     projectsDiv.appendChild(inputForProjectName);
     
-    const submitButtonForProjectName = document.createElement('button');
+    const submitButtonForProjectName = document.createElement('div');
     closeButton.classList.add('projects__btn', 'projects__btn--submit');
     projectsDiv.appendChild(closeButton);
     submitButtonForProjectName.textContent = 'Ok';
