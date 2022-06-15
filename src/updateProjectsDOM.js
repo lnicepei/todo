@@ -1,6 +1,6 @@
-import { Project } from "./projects";
+import { Project, deleteProject, checkIdenticalProject } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
-import { intervalToDuration, isAfter, isToday } from 'date-fns';
+import { createUpcomingTasks, createTodaysTasks, deleteTask } from './todos';
 
 let arrayOfProjects = [];
 
@@ -76,36 +76,6 @@ function updateProjects() {
         project.appendChild(deleteProjectButton);
         if(projectInArray.name !== 'Inbox'){
             document.querySelector('.projects').appendChild(project);
-        }
-    });
-}
-
-function createTodaysTasks() {
-    document.querySelector('.content').textContent = '';
-    document.querySelector('.create-button').textContent = '';
-    
-    updateCurrentProject('Today');
-
-    arrayOfProjects.forEach(project => {
-        for (let f in project.arrayOfTodos) {
-            if(isToday(new Date(project.arrayOfTodos[f].date))) {
-                createAllTasksInProject(project, f);
-            }
-        }
-    });
-}
-
-function createUpcomingTasks() {
-    document.querySelector('.content').textContent = '';
-    document.querySelector('.create-button').textContent = '';
-
-    updateCurrentProject('Upcoming');
-
-    arrayOfProjects.forEach(project => {
-        for(let f in project.arrayOfTodos) {
-            if(isAfter(new Date(project.arrayOfTodos[f].date), new Date())){
-                createAllTasksInProject(project, f, 'upcoming');
-            }
         }
     });
 }
@@ -251,23 +221,8 @@ function inputProjectName() {
     });
 }
 
-function checkIdenticalProject(name) {
-    if(arrayOfProjects.filter(project => project.name == name).length > 0) return true;
-    return false;
-}
-
-function deleteTask(newProject, numberOfTask) {
-    newProject.arrayOfTodos.splice(numberOfTask, 1); 
-    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
-}
-
-function deleteProject(newProject) {
-    arrayOfProjects = arrayOfProjects.filter(project => project !== newProject);
-    localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
-    
-    updateProjects();
-
-    document.querySelector('.content').textContent = '';
-}
-
-export {inputProjectName, createAllTasksInProject, arrayOfProjects}
+export {inputProjectName,
+        updateCurrentProject,
+        createAllTasksInProject,
+        updateProjects,
+        arrayOfProjects}
