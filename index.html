@@ -8,8 +8,8 @@
     <title>Document</title>
 </head>
 <body> 
-    <div class="project-name"></div>
-    <div class="sidebar">
+    <div class="project-name blur"></div>
+    <div class="sidebar blur">
         <div class="logo">
             <h1>Todolist</h1>
         </div>
@@ -29,23 +29,32 @@
     </div>
     <div class="popup-container" autocomplete="off">
         <div class="popup-container__form">
-            <label for="taskname">Task name</label>
-            <input type="text" name="taskname" id="taskname" required>
-            <label for="description">Description</label>
-            <input type="text" name="description" id="description" required>
-            <select name="priority" id="priority">
-                <option value="0"></option>
-                <option value="1">Urgent</option>
-                <option value="2">Normal</option>
-                <option value="3">Light</option>
-            </select>
-            <label for="date">Due date</label>
-            <input type="date" name="date" id="date">
+            <div class="popup-container__form__taskname">
+                <label for="taskname">Task name</label>
+                <input type="text" name="taskname" id="taskname" required>
+            </div>
+            <div class="popup-container__form__description">
+                <label for="description">Description</label>
+                <input type="text" name="description" id="description" required>
+            </div>
+            <div class="popup-container__form__priority">
+                <label for="priority">Priority</label>
+                <select name="priority" id="priority">
+                    <option value="0"></option>
+                    <option value="1">Urgent</option>
+                    <option value="2">Normal</option>
+                    <option value="3">Light</option>
+                </select>
+            </div>
+            <div class="popup-container__form__date">
+                <label for="date">Due date</label>
+                <input type="date" name="date" id="date">
+            </div>
             <button type="submit" class="form__submit-button">Submit</button>
         </div>
     </div>
-    <div class="content"></div>
-    <div class="create-button"></div>
+    <div class="content blur"></div>
+    <div class="create-button blur"></div>
     <script src="main.js"></script>
 </body>
 </html>
