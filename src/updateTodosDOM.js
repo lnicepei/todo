@@ -50,16 +50,17 @@ function getDataFromForm(e) {
     let date = document.getElementById('date').value;
     let priority = document.getElementById('priority').value;
 
-    date = new Date(date);
-    date = format(date, 'd MMM y (EE)');
-
+    
     if (name) {
+        if(date)date = new Date(date);
+        if(date)date = format(date, 'd MMM y (EE)');
+
         document.getElementById('taskname').value = '';
         document.getElementById('description').value = '';
         document.getElementById('date').value = '';
         document.getElementById('priority').value = '';
 
-        if(!description) description = 'No description';
+        // if(!description) description = 'No description';
 
         let task = Todo(name, description, date, priority);
         e.currentTarget.parameter.arrayOfTodos.push(task);
@@ -70,10 +71,10 @@ function getDataFromForm(e) {
         popup.style.transform = 'scale(0)';
 
         const blur = document.querySelectorAll('.blur');
-            blur.forEach((item) => {
-                // item.classList.toggle('active');
-                item.classList.remove('active');
-            });
+        blur.forEach((item) => {
+            // item.classList.toggle('active');
+            item.classList.remove('active');
+        });
 
         createAllTasksInProject(e.currentTarget.parameter);
     }else {
