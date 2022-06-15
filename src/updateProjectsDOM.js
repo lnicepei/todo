@@ -62,7 +62,15 @@ function updateProjects() {
         
         const deleteProjectButton = document.createElement('div');
         deleteProjectButton.classList.add('project__btn');
-        deleteProjectButton.textContent = 'x';
+        deleteProjectButton.textContent = projectInArray.arrayOfTodos.length;
+
+        deleteProjectButton.addEventListener('mouseenter', () => {
+            deleteProjectButton.textContent = 'X';
+        });
+
+        deleteProjectButton.addEventListener('mouseleave', () => {
+            deleteProjectButton.textContent = projectInArray.arrayOfTodos.length;
+        });
         
         deleteProjectButton.addEventListener('click', () => {
             document.querySelector('.create-button').textContent = '';
@@ -80,6 +88,7 @@ function updateProjects() {
         }
     });
 }
+
 
 function createAllTasksInProject(project, indexOfTodayTask, origin) {
     if (!indexOfTodayTask) {
@@ -130,22 +139,25 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskTimeLeft = document.createElement('div');
         taskTimeLeft.className = 'task__time-left';
         
-        let timeRemaining = intervalToDuration({
-            start: new Date(project.arrayOfTodos[f].date),
-            end: new Date(),
-        });
-        
-        if(!indexOfTodayTask && isToday(new Date(project.arrayOfTodos[f].date))) {// time for today tasks
-            taskTimeLeft.textContent = 'today'; 
-            taskDivRight.appendChild(taskTimeLeft);
-        }
-        if(origin == 'upcoming' || isAfter(new Date(project.arrayOfTodos[f].date), new Date())){//time for tasks in the past
-            taskTimeLeft.textContent = formatDuration(timeRemaining, {
-                delimiter: ', '
+        if(project.arrayOfTodos[f].date){
+            let timeRemaining = intervalToDuration({
+                start: new Date(project.arrayOfTodos[f].date),
+                end: new Date(),
             });
-            taskTimeLeft.textContent += ' left';
-            taskDivRight.appendChild(taskTimeLeft);
-        } 
+
+            if(!indexOfTodayTask && isToday(new Date(project.arrayOfTodos[f].date))) {// time for today tasks
+                taskTimeLeft.textContent = 'today'; 
+                taskDivRight.appendChild(taskTimeLeft);
+            }
+            if(origin == 'upcoming' || isAfter(new Date(project.arrayOfTodos[f].date), new Date())){//time for tasks in the past
+                taskTimeLeft.textContent = formatDuration(timeRemaining, {
+                    delimiter: ', '
+                });
+                taskTimeLeft.textContent += ' left';
+                taskDivRight.appendChild(taskTimeLeft);
+            } 
+        }
+        
 
         
         const taskDate = document.createElement('div');
@@ -153,6 +165,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         taskDate.className = 'task__date';
         taskDate.textContent = project.arrayOfTodos[f].date;
 
+        console.log('~ project.arrayOfTodos[f].priority', project.arrayOfTodos[f].priority);
         switch (project.arrayOfTodos[f].priority) {
             case '1':
                 taskCheckbox.style.border = '2px solid red';
@@ -166,6 +179,9 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
             case '0':
                 taskCheckbox.style.border = '2px solid black';
                 break;
+            case '':
+                taskCheckbox.style.border = '2px solid black';
+            break;
             default:
                 break;
         }
@@ -190,6 +206,8 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
     }
 
     if(!indexOfTodayTask) TodoButton(project);
+
+    updateProjects();
     
     localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
 }
