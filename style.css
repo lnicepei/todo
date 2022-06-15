@@ -155,7 +155,7 @@ input:focus, textarea:focus{
     filter: blur(0px); 
 }
 
-.sidebar, .content, .project-name{
+.sidebar, .content, .project-name, .create-button{
     transition: .2s linear;
 }
 
