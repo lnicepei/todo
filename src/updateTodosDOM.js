@@ -3,10 +3,10 @@ import { Todo } from "./todos";
 import { createAllTasksInProject, arrayOfProjects } from "./updateProjectsDOM";
 
 function TodoButton(newProject) {
-    let todoButton = document.createElement('button');
+    let todoButton = document.createElement('div');
    
     document.querySelector('.create-button').appendChild(todoButton);
-    todoButton.textContent = 'Create todo';
+    todoButton.innerHTML = `<svg style="width:50px;height:71px" viewBox="0 0 24 24">    <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>`;
     todoButton.className = 'create-button__btn';
 
     todoButton.addEventListener('click', () => {
@@ -37,6 +37,8 @@ function getDataFromForm(e) {
     date = format(date, 'd MMM y (EE)');
 
     if (name) {
+        if(!description) description = 'No description';
+        console.log('~ description', description);
         let task = Todo(name, description, date, priority)
         e.currentTarget.parameter.arrayOfTodos.push(task);
         localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
