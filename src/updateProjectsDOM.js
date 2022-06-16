@@ -159,14 +159,11 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
             } 
         }
         
-
-        
         const taskDate = document.createElement('div');
         taskDivRight.appendChild(taskDate);
         taskDate.className = 'task__date';
         taskDate.textContent = project.arrayOfTodos[f].date;
 
-        console.log('~ project.arrayOfTodos[f].priority', project.arrayOfTodos[f].priority);
         switch (project.arrayOfTodos[f].priority) {
             case '1':
                 taskCheckbox.style.border = '2px solid red';
