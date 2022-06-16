@@ -76,6 +76,7 @@ function updateProjects() {
             document.querySelector('.create-button').textContent = '';
             deleteProject(projectInArray);
             deleteButtonIndex = 1;
+            createAllTasksInProject(arrayOfProjects[0]);
         });
         
         project.addEventListener('click', () => {
@@ -223,12 +224,11 @@ function inputProjectName() {
 
     const closeButton = document.createElement('div');
     closeButton.classList.add('projects__btn', 'projects__btn--close');
-    closeButton.textContent = 'x';
+    closeButton.textContent = 'Cancel';
 
     closeButton.addEventListener('click', () => {
         projectsDiv.removeChild(inputForProjectName);
-        projectsDiv.removeChild(submitButtonForProjectName);
-        projectsDiv.removeChild(closeButton);
+        projectsDiv.removeChild(projectButtons);
 
         this.addEventListener('click', inputProjectName);
     });
@@ -240,18 +240,22 @@ function inputProjectName() {
     projectsDiv.appendChild(inputForProjectName);
     
     const submitButtonForProjectName = document.createElement('div');
-    closeButton.classList.add('projects__btn', 'projects__btn--submit');
-    projectsDiv.appendChild(closeButton);
+    submitButtonForProjectName.classList.add('projects__btn', 'projects__btn--submit');
     submitButtonForProjectName.textContent = 'Ok';
+    
+    const projectButtons = document.createElement('div');
+    projectButtons.className = 'projects__buttons';
+    projectButtons.appendChild(submitButtonForProjectName);
+    projectButtons.appendChild(closeButton);
 
-    projectsDiv.appendChild(submitButtonForProjectName);
+    projectsDiv.appendChild(projectButtons);
 
     submitButtonForProjectName.addEventListener('click', () => {
         let name = inputForProjectName.value;
         
         if(name && name.length < 16 && !checkIdenticalProject(name)) {
             projectsDiv.removeChild(inputForProjectName);
-            projectsDiv.removeChild(submitButtonForProjectName);
+            projectsDiv.removeChild(projectButtons);
 
             document.querySelector('.create-button').textContent = '';
             document.querySelector('.project-name').textContent = name;
