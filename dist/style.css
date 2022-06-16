@@ -40,7 +40,8 @@ body{
     background: #b1aaf5;
     font-size: 1.5rem;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+
 }
 
 .inbox:hover, .today:hover, .upcoming:hover, .project:hover{
@@ -68,9 +69,26 @@ body{
     font-weight: bolder;
 }
 
-.projects__btn{
-    /* margin: 10px;
-    padding: 10px; */
+.projects__buttons{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.projects__btn--submit, .projects__btn--close{
+    background:#b1aaf5;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.projects__name-input{
+    margin: 10px;
+
+    border-radius: 20px;
+    width: 86%;
+    text-align: center;
 }
 
 .content{
@@ -82,6 +100,7 @@ body{
     padding-left: 15vw;
     /* margin-left: 50vw; */
     /* margin-top: 50px; */
+    z-index: -1;
 }
 
 .create-button{
@@ -92,6 +111,7 @@ body{
     width: 85vw;
     height: auto;
     font-size: 3rem;
+    z-index: 3;
 }
 
 .create-button__btn{
@@ -102,7 +122,6 @@ body{
     text-align: center;
     border-radius: 100px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    
 }
 
 .create-button__btn:hover{
@@ -215,7 +234,7 @@ input:focus, textarea:focus{
     width: 80%;
     background: #f6f8fa;
     color: black;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
