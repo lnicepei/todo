@@ -9,7 +9,7 @@
 body{
     height: 100vh;
     width: 100vw;
-    background: #f6f8fa;
+    background: #b1aaf5;
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -17,53 +17,68 @@ body{
 .sidebar{
     width: 15vw;
     height: 100vh;
-    background: #ffffff;
+    background: #06283D;
     display: flex;
     flex-direction: column;
-    color: black;
+    color: #dff6ff;
     position: fixed;
     top: 0;
     padding: 20px;
+    gap: 40px;
+}
+
+.sidebar__top, .sidebar__bottom{
+    box-shadow: 1px 1px 1px 1px black;
+    border-radius: 10px;
+}
+
+.sidebar__bottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
 }
 
 .logo{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-content: center;
     gap: 40px;
     font-size: 1rem;
 }
 
-.inbox, .today, .upcoming, .project{
+.inbox, .today, .upcoming, .project, .projects__btn{
     padding: 10px;
     margin: 10px;
     background: #b1aaf5;
     font-size: 1.5rem;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
-
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.inbox:hover, .today:hover, .upcoming:hover, .project:hover{
-    transition: .5s ease;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+.inbox:active, .today:active, .upcoming:active, .project:active{
+    transition: .05s ease;
+    outline: 3px solid #dff6ff;
 }
 
 .project{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
 }
 
 .project__btn{
-    color: grey;
+    color: #dff6ff;
 }
 
 .project-name{
-    /* border: 2px solid grey; */
+    display: flex;
+    align-items: center;
     height: 10vh;
-    width: 100%;
-    margin-left: 25vw;
+    width: 68.2%;
+    margin-left: 22.8vw;
     padding-top: 4px;
     font-size: 3rem;
     font-weight: bolder;
@@ -108,6 +123,7 @@ body{
     justify-content: center;
     align-items: center;
     margin-left: 15vw;
+    margin-top: 10px;
     width: 85vw;
     height: auto;
     font-size: 3rem;
@@ -121,7 +137,8 @@ body{
     margin: auto; */
     text-align: center;
     border-radius: 100px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: #dff6ff;
 }
 
 .create-button__btn:hover{
@@ -232,7 +249,7 @@ input:focus, textarea:focus{
     justify-content: space-between;
     align-items: center;
     width: 80%;
-    background: #f6f8fa;
+    background: #DFF6FF;
     color: black;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
@@ -264,7 +281,7 @@ input:focus, textarea:focus{
 
 .task__checkbox:hover{
     transition: .2s linear;
-    background-color: lightgray;
+    background-color: #b1aaf5;
 }
 
 .task__name-and-description{
