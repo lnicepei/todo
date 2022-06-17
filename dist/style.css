@@ -48,7 +48,7 @@ body{
     font-size: 1rem;
 }
 
-.inbox, .today, .upcoming, .project, .projects__btn{
+.inbox, .today, .upcoming, .project, .projects__btn, .search{
     padding: 10px;
     margin: 10px;
     background: #b1aaf5;
