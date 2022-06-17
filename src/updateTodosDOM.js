@@ -60,9 +60,7 @@ function getDataFromForm(e) {
         document.getElementById('date').value = '';
         document.getElementById('priority').value = '';
 
-        // if(!description) description = 'No description';
-
-        let task = Todo(name, description, date, priority);
+        let task = Todo(name, description, date, priority, e.currentTarget.parameter.name);
         e.currentTarget.parameter.arrayOfTodos.push(task);
 
         localStorage.setItem('projects', JSON.stringify(arrayOfProjects));
