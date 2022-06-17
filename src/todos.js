@@ -1,12 +1,13 @@
 import { arrayOfProjects, updateCurrentProject, createAllTasksInProject } from "./updateProjectsDOM"
 import { isAfter, isToday } from 'date-fns';
 
-function Todo(name, description, date, priority){
+function Todo(name, description, date, priority, project){
     return{
         name: name,
         description: description,
         date: date,
         priority: priority,
+        project: project
     }
 }
 
