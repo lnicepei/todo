@@ -2,7 +2,6 @@ import { Project, deleteProject, checkIdenticalProject } from "./projects";
 import { TodoButton } from "./updateTodosDOM";
 import { createUpcomingTasks, createTodaysTasks, deleteTask } from './todos';
 import { formatDuration, intervalToDuration, isAfter, isToday } from "date-fns";
-import { fil } from "date-fns/locale";
 
 let arrayOfProjects = [];
 
@@ -53,61 +52,24 @@ function createProject(name) {
 
 function searchForTasks(){
     document.querySelector('.content').textContent = '';
+    document.querySelector('.create-button').textContent = '';
 
+    updateCurrentProject('Search');
+
+    const searchDiv = document.querySelector('.search-field');
     const searchInput = document.createElement('input');
-    document.querySelector('.content').appendChild(searchInput);
+    if(!searchDiv.hasChildNodes()) searchDiv.appendChild(searchInput);
 
     searchInput.addEventListener('keyup', () => {
+        document.querySelector('.content').textContent = '';
+        const filtered = new Project('Search');
         arrayOfProjects.forEach(project => {
-            console.log('~ searchInput.value', searchInput.value);
-            const filtered = project.arrayOfTodos.filter(todo => todo.name.indexOf(searchInput.value) > -1 && searchInput.value ? 1 : 0);
-            createSearchResults(filtered);
-        })
-    })
-}
+            project.arrayOfTodos.filter(todo => todo.name.indexOf(searchInput.value) > -1 && searchInput.value ? filtered.arrayOfTodos.push(todo) : 0)
+            createAllTasksInProject(filtered);
+        });
+        document.querySelector('.create-button').textContent = '';
+    });
 
-function createSearchResults(filtered){
-    document.querySelector('.content').textContent = '';
-    filtered.forEach(todo => {
-        const projectOfTodo = arrayOfProjects.find(project => project.name == todo.project);
-        const searchInput = document.createElement('input');
-        document.querySelector('.content').appendChild(searchInput);
-        createExactTodo(projectOfTodo, todo);
-    })
-}
-
-function createExactTodo(project, todo){
-    const taskDiv = document.createElement('div');
-    taskDiv.className = 'task';
-
-    const taskDivLeft = document.createElement('div');
-    taskDivLeft.className = 'task__left';
-    taskDiv.appendChild(taskDivLeft);
-
-    const taskDivRight = document.createElement('div');
-    taskDivRight.className = 'task__right';
-    taskDiv.appendChild(taskDivRight);
-
-    const taskNameAndDescription = document.createElement('div');
-    taskNameAndDescription.className = 'task__name-and-description';
-    
-    const taskCheckbox = document.createElement('div');
-    taskCheckbox.textContent = '';
-    taskCheckbox.className = 'task__checkbox';
-    taskDivLeft.appendChild(taskCheckbox);
-    
-    const taskName = document.createElement('div');
-    taskName.textContent = todo.name;
-    taskName.className = 'name';
-    taskNameAndDescription.appendChild(taskName);
-    
-    const taskDescription = document.createElement('div');
-    taskDescription.textContent = todo.description;
-    taskDescription.className = 'description';
-    taskNameAndDescription.appendChild(taskDescription);
-    taskDivLeft.appendChild(taskNameAndDescription);
-
-    document.querySelector('.content').appendChild(taskDiv);
 }
 
 function updateProjects() {
@@ -158,7 +120,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         updateCurrentProject(project);
     }
 
-    for(let f in project.arrayOfTodos) {
+    project.arrayOfTodos.forEach(todo => {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task';
 
@@ -179,12 +141,12 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         taskDivLeft.appendChild(taskCheckbox);
         
         const taskName = document.createElement('div');
-        taskName.textContent = project.arrayOfTodos[f].name;
+        taskName.textContent = todo.name;
         taskName.className = 'name';
         taskNameAndDescription.appendChild(taskName);
         
         const taskDescription = document.createElement('div');
-        taskDescription.textContent = project.arrayOfTodos[f].description;
+        taskDescription.textContent = todo.description;
         taskDescription.className = 'description';
         taskNameAndDescription.appendChild(taskDescription);
         taskDivLeft.appendChild(taskNameAndDescription);
@@ -199,17 +161,17 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskTimeLeft = document.createElement('div');
         taskTimeLeft.className = 'task__time-left';
         
-        if(project.arrayOfTodos[f].date){
+        if(todo.date){
             let timeRemaining = intervalToDuration({
-                start: new Date(project.arrayOfTodos[f].date),
+                start: new Date(todo.date),
                 end: new Date(),
             });
 
-            if(!indexOfTodayTask && isToday(new Date(project.arrayOfTodos[f].date))) {// time for today tasks
+            if(!indexOfTodayTask && isToday(new Date(todo.date))) {// time for today tasks
                 taskTimeLeft.textContent = 'today'; 
                 taskDivRight.appendChild(taskTimeLeft);
             }
-            if(origin == 'upcoming' || isAfter(new Date(project.arrayOfTodos[f].date), new Date())){//time for tasks in the past
+            if(origin == 'upcoming' || isAfter(new Date(todo.date), new Date())){//time for tasks in the past
                 taskTimeLeft.textContent = formatDuration(timeRemaining, {
                     delimiter: ', '
                 });
@@ -221,9 +183,9 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         const taskDate = document.createElement('div');
         taskDivRight.appendChild(taskDate);
         taskDate.className = 'task__date';
-        taskDate.textContent = project.arrayOfTodos[f].date;
+        taskDate.textContent = todo.date;
 
-        switch (project.arrayOfTodos[f].priority) {
+        switch (todo.priority) {
             case '1':
                 taskCheckbox.style.border = '2px solid red';
                 break;
@@ -244,25 +206,26 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
         }
 
         taskCheckbox.addEventListener('click', () => {
-            deleteTask(project, f);
+            deleteTask(project, project.arrayOfTodos.findIndex(projectTodo => projectTodo.name == todo.name));
+            deleteTask(arrayOfProjects.find(project => project.name == todo.project), project.arrayOfTodos.findIndex(projectTodo => projectTodo.name == todo.name));
             if(!indexOfTodayTask) {
                 createAllTasksInProject(project);
             }else if(indexOfTodayTask && origin == 'upcoming') {
                 createUpcomingTasks();
             }else {
-                createTodaysTasks();
+                createTodaysTasks();    
             }
         });
 
 
         if(indexOfTodayTask) {
-            if(indexOfTodayTask == f) document.querySelector('.content').appendChild(taskDiv);
+            if(indexOfTodayTask == project.arrayOfTodos.findIndex(projectTodo => projectTodo.name == todo.name)) document.querySelector('.content').appendChild(taskDiv);
         }else {
             document.querySelector('.content').appendChild(taskDiv);
         }
-    }
+    });
 
-    if(!indexOfTodayTask) TodoButton(project);
+    if(!indexOfTodayTask && project.name !== 'Search') TodoButton(project);
 
     updateProjects();
     
@@ -271,6 +234,7 @@ function createAllTasksInProject(project, indexOfTodayTask, origin) {
 
 function updateCurrentProject(project) {
     (project.name) ? document.querySelector('.project-name').textContent = project.name : document.querySelector('.project-name').textContent = project;
+    (project == 'Search' || project.name == 'Search') ? document.querySelector('.search-field').classList.remove('invisible') : document.querySelector('.search-field').classList.add('invisible');
 }
 
 function inputProjectName() {
