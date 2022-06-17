@@ -115,7 +115,7 @@ body{
     padding-left: 15vw;
 }
 
-.create-button{
+.create-button, .search-field{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,6 +125,10 @@ body{
     height: auto;
     font-size: 3rem;
     z-index: 3;
+}
+
+.invisible{
+    display: none;
 }
 
 .create-button__btn{
