@@ -1,3 +1,12 @@
 node_modules/
 .vscode/
 yarn.lock
+.eslintrc.js
+server.js
+webpack.common.js
+webpack.config.js
+webpack.dev.js
+webpack.prod.js
+package.json
+package-lock.json
+.gitignore
