@@ -17,6 +17,7 @@ let arrayOfProjects = [];
     document.querySelector('.today').addEventListener('click', createTodaysTasks);
     document.querySelector('.upcoming').addEventListener('click', createUpcomingTasks);
     document.querySelector('.search').addEventListener('click', searchForTasks);
+    document.querySelector('.projects__btn').addEventListener('click', inputProjectName);
 })();
 
 function createInbox() {
