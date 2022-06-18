@@ -13,8 +13,6 @@ function TodoButton(newProject) {
         const blur = document.querySelectorAll('.blur');
         blur.forEach((item) => {
             item.classList.toggle('active');
-            // item.classList.remove('inactive');
-            // item.classList.add('active');
         });
         createPopup(newProject);
     });
@@ -37,10 +35,7 @@ function blurBackground(e){
         const blur = document.querySelectorAll('.blur');
         blur.forEach((item) => {
             item.classList.toggle('active');
-            // item.classList.remove('active');
-            // item.classList.add('inactive');
         });
-        // document.body.removeEventListener('click', blurBackground);
     }
 }
 
@@ -70,7 +65,6 @@ function getDataFromForm(e) {
 
         const blur = document.querySelectorAll('.blur');
         blur.forEach((item) => {
-            // item.classList.toggle('active');
             item.classList.remove('active');
         });
 
